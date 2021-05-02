@@ -3,6 +3,8 @@ import App from './App.vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+import router from './router/index'
+
 //导入axios
 import Axios from "axios";
 //配置异步将要访问的路径
@@ -15,5 +17,6 @@ Vue.use(ElementUI);
 
 new Vue({
   el: '#app',
-  render: h => h(App)
+  render: h => h(App),
+  router
 })
