@@ -10,7 +10,7 @@
     <div class="line"></div>
   </el-header>
   <el-main>
-    <div style="margin-top: -75px;left: -500px">
+    <div style="margin-top: -55px;left: -500px">
       <el-input
         placeholder="输入分类编号或分类名称"
         v-model="input"
@@ -20,14 +20,14 @@
       <el-button type="danger" @click="isadduserwin=true">添加</el-button>
     </div>
 <div>
-  <el-card>
+  <el-card style="margin-top: -40px">
 <!--    展示表格数据-->
     <el-table :data="cationData" border style="width: 100%">
       <el-table-column prop="spTypeId" label="分类ID" width="180"></el-table-column>
       <el-table-column prop="kind_id" label="分类编号" width="180" ></el-table-column>
       <el-table-column prop="Kind_Name" label="分类名称"></el-table-column>
       <el-table-column prop="Kind_jibie" label="分类级别"></el-table-column>
-      <el-table-column prop="Kind_jibie" label="操作">
+      <el-table-column prop="Kind_Stat" label="操作">
         <template slot-scope="scope">
           <!-- 修改 -->
           <el-button type="primary" icon="el-icon-edit" size="mini"
@@ -56,9 +56,9 @@
 
   </el-main>
   </el-container>
+
 </div>
 </template>
-
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <!-- import Vue before Element -->
@@ -66,13 +66,11 @@
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script>
-  import Vue from "vue";
-
   export default {
     name: "commodity",
     data() {
       return {
-        data: {
+
           cationData: [
             {
               spTypeId: '2016-05-03',
@@ -82,17 +80,11 @@
           ],
           input: '',
 
-        }
+
 
       }
     }
   }
-  new Vue({
-    el:"#app",
-    data:{
-
-    }
-  })
 
 
 </script>
@@ -104,7 +96,7 @@
 </style>
 <style>
   /*全局样式 */
-  html, body, #app {
+  body, #app {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -118,12 +110,9 @@
     margin-top: 15px;
     font-size: 15px;
     min-width: 350px;
-    min-height: 100px;
   }
-
-  /*布局充满：container下的每个块充满*/
-  .home-container {
-    height: 100%;
+  .el-table-column{
+    max-height: 30px;
   }
 
   /*头样式*/
