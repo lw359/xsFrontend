@@ -10,6 +10,7 @@
     <div class="line"></div>
   </el-header>
   <el-main>
+    <div></div>
     <div>
       <span>根据条件查询分类信息：</span>
       <input></input>
