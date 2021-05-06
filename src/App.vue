@@ -143,7 +143,6 @@
 
 
 <script>
-  // import Main from './compennets/main'
   export default {
     name: 'app',
     data () {
@@ -161,9 +160,6 @@
       },
       activeIndex() {
 
-      },
-      cmenu(){
-        this.$router.push({path:"/myMain"})
       }
     },
   }
