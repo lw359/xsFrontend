@@ -49,17 +49,16 @@
                 <el-menu-item index="1-4">菜单管理</el-menu-item>
                 <el-menu-item index="1-5">职位管理</el-menu-item>
               </el-menu-item-group>
-              <!--              <el-submenu index="1-4">-->
-              <!--                <span slot="title">选项4</span>-->
-              <!--                <el-menu-item index="1-4-1">选项1</el-menu-item>-->
-              <!--              </el-submenu>-->
+
             </el-submenu>
             <el-submenu index="3">
               <template slot="title">
                 <i class="el-icon-document"></i>
                 <span slot="title">商品资料维护</span>
               </template>
+              <router-link to="/commodity" class="a">
               <el-menu-item index="1-6">商品分类信息维护</el-menu-item>
+              </router-link>
               <el-menu-item index="1-7">商品信息维护</el-menu-item>
             </el-submenu>
             <el-submenu index="4">

@@ -5,6 +5,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import router from './router/index'
 
+
 //导入axios
 import Axios from "axios";
 //配置异步将要访问的路径
