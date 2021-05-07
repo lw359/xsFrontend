@@ -4,7 +4,7 @@
   <el-header>
     <el-menu  class="el-menu-demo" mode="horizontal"style="width: 100%;margin-left: -20px">
       <el-menu-item style="margin-top: -18px">
-        <h1>商品资料维护>商品分类信息维护</h1>
+        <h1>商品资料维护 > 商品分类信息维护</h1>
       </el-menu-item>
     </el-menu>
     <div class="line"></div>
