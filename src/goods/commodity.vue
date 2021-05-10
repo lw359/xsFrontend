@@ -189,7 +189,7 @@
         this.$axios.post("show.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
-        }).catch();
+        })
       },
       getdata(){
         var _this =this;
