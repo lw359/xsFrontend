@@ -21,7 +21,9 @@
           <el-button type="success" plain @click="getQuery()">查询</el-button>
           <el-button style="margin-left: 800px" type="danger" @click="addDialogVisible=true">添加</el-button>
         </div>
+        <div>
 
+        </div>
         <el-card style="margin-top: -40px">
           <!--    展示表格数据-->
           <el-table :data="cationData" border style="width: 100%" >
