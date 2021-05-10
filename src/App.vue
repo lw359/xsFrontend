@@ -101,7 +101,9 @@
                 <i class="el-icon-sell"></i>
                 <span slot="title">统计管理</span>
               </template>
+              <router-link to="/Purchase" class="a">
               <el-menu-item index="2-3">采购申请</el-menu-item>
+              </router-link>
               <el-menu-item index="2-4">采购申请记录</el-menu-item>
               <el-menu-item index="2-5">采购申请审核</el-menu-item>
               <el-menu-item index="2-6">采购申请审核记录</el-menu-item>
