@@ -347,14 +347,10 @@
         })
         this.$axios.post("/updateByGoods.action",params).then(
           function (response){
-            if (response>0){
               _this.$message.success("修改成功！");
               //隐藏修改框
               _this.editDialogVisible = false;
               _this.getdata();
-            }else{
-              _this.$message.success("修改失败！");
-            }
           }
         ).catch()
 
