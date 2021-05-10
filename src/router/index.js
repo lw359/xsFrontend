@@ -9,6 +9,7 @@ import Main from "../compennets/Mymain";
 
 import Login from "../login/login";
 import Commodity from "../goods/commodity"
+import TenanceGoods from "../goods/tenanceGoods";
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
 const originalPush = VueRouter.prototype.push
@@ -21,7 +22,8 @@ const routes = [
   //单个路由均为对象类型，path代表的是路径，component代表组件
   {path:'/myMain',component:Main},
   {path:"/Login",component:Login},
-  {path: "/commodity",component: Commodity}
+  {path: "/commodity",component: Commodity},
+  {path: "/tenanceGoods",component: TenanceGoods},
 ]
 
 //实例化VueRouter并将routes添加进去

@@ -59,7 +59,9 @@
               <router-link to="/commodity" class="a">
               <el-menu-item index="1-6">商品分类信息维护</el-menu-item>
               </router-link>
+              <router-link to="/tenanceGoods" class="a">
               <el-menu-item index="1-7">商品信息维护</el-menu-item>
+              </router-link>
             </el-submenu>
             <el-submenu index="4">
               <template slot="title">

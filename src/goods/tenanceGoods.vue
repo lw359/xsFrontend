@@ -1,117 +1,117 @@
 <template>
-<div id="app">
-  <el-container style="margin-top: -10px;margin-left: -10px">
-  <el-header>
-    <el-menu  class="el-menu-demo" mode="horizontal"style="width: 100%;margin-left: -20px">
-      <el-menu-item style="margin-top: -18px">
-        <h1>商品资料维护 > 商品分类信息维护</h1>
-      </el-menu-item>
-    </el-menu>
-    <div class="line"></div>
-  </el-header>
-  <el-main>
-    <div style="margin-top: -55px;left: -500px">
-      <el-input
-        placeholder="输入商品分类名称"
-        v-model="input"
-        clearable style="width: 250px"
-        id="goodsName"
-      >
-      </el-input>
-      <el-button type="success" plain @click="getQuery()">查询</el-button>
-      <el-button style="margin-left: 800px" type="danger" @click="addDialogVisible=true">添加</el-button>
-    </div>
+  <div id="app">
+    <el-container style="margin-top: -10px;margin-left: -10px">
+      <el-header>
+        <el-menu  class="el-menu-demo" mode="horizontal"style="width: 100%;margin-left: -20px">
+          <el-menu-item style="margin-top: -18px">
+            <h1>商品资料维护 > 商品信息维护</h1>
+          </el-menu-item>
+        </el-menu>
+        <div class="line"></div>
+      </el-header>
+      <el-main>
+        <div style="margin-top: -55px;left: -500px">
+          <el-input
+            placeholder="输入分类编号或分类名称"
+            v-model="input"
+            clearable style="width: 250px"
+            id="goodsName"
+          >
+          </el-input>
+          <el-button type="success" plain @click="getQuery()">查询</el-button>
+          <el-button style="margin-left: 800px" type="danger" @click="addDialogVisible=true">添加</el-button>
+        </div>
 
-  <el-card style="margin-top: -40px">
-<!--    展示表格数据-->
-    <el-table :data="cationData" border style="width: 100%" >
-      <el-table-column prop="spTypeId" label="分类ID" width="180"></el-table-column>
-      <el-table-column prop="kindid" label="分类编号" width="180" ></el-table-column>
-      <el-table-column prop="kindName" label="分类名称"></el-table-column>
-      <el-table-column prop="kindjibie" label="分类级别"></el-table-column>
-      <el-table-column prop="Kind_Stat" label="操作">
-        <template slot-scope="scope">
-          <!-- 修改 -->
-          <el-button type="primary" icon="el-icon-edit" size="mini"
-                     @click="showEditDialog(scope.row.spTypeId)">修改</el-button>
-          <!-- 删除 -->
-          <el-button type="danger" icon="el-icon-delete" size="mini"
-                     @click="deleteEmpInfo(scope.row.spTypeId)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页：:current-page 当前页码 -->
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="100"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination>
-  </el-card>
-    <!--添加分类对话框-->
-<el-dialog title="添加分类信息" :visible.sync="addDialogVisible" @close="addDialogClosed" width="50%">
-<el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="80px">
-  <!-- 分类编号 -->
-  <el-form-item label="分类编号" prop="kindid">
-    <el-input v-model="addForm.kindid"></el-input>
-  </el-form-item>
-  <!-- 分类名称 -->
-  <el-form-item label="分类名称" prop="kindName">
-    <el-input v-model="addForm.kindName"></el-input>
-  </el-form-item>
-  <!-- 分类级别 -->
-  <el-form-item label="分类级别" prop="kindjibie">
-    <el-input v-model="addForm.kindjibie"></el-input>
-  </el-form-item>
-</el-form>
-  <!-- 内容底部区域 -->
-  <span slot="footer" class="dialog-footer">
+        <el-card style="margin-top: -40px">
+          <!--    展示表格数据-->
+          <el-table :data="cationData" border style="width: 100%" >
+            <el-table-column prop="spTypeId" label="分类ID" width="180"></el-table-column>
+            <el-table-column prop="kindid" label="分类编号" width="180" ></el-table-column>
+            <el-table-column prop="kindName" label="分类名称"></el-table-column>
+            <el-table-column prop="kindjibie" label="分类级别"></el-table-column>
+            <el-table-column prop="Kind_Stat" label="操作">
+              <template slot-scope="scope">
+                <!-- 修改 -->
+                <el-button type="primary" icon="el-icon-edit" size="mini"
+                           @click="showEditDialog(scope.row.spTypeId)">修改</el-button>
+                <!-- 删除 -->
+                <el-button type="danger" icon="el-icon-delete" size="mini"
+                           @click="deleteEmpInfo(scope.row.spTypeId)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <!-- 分页：:current-page 当前页码 -->
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total">
+          </el-pagination>
+        </el-card>
+        <!--添加分类对话框-->
+        <el-dialog title="添加分类信息" :visible.sync="addDialogVisible" @close="addDialogClosed" width="50%">
+          <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="80px">
+            <!-- 分类编号 -->
+            <el-form-item label="分类编号" prop="kindid">
+              <el-input v-model="addForm.kindid"></el-input>
+            </el-form-item>
+            <!-- 分类名称 -->
+            <el-form-item label="分类名称" prop="kindName">
+              <el-input v-model="addForm.kindName"></el-input>
+            </el-form-item>
+            <!-- 分类级别 -->
+            <el-form-item label="分类级别" prop="kindjibie">
+              <el-input v-model="addForm.kindjibie"></el-input>
+            </el-form-item>
+          </el-form>
+          <!-- 内容底部区域 -->
+          <span slot="footer" class="dialog-footer">
                         <el-button @click="addDialogVisible = false">取 消</el-button>
                         <el-button type="primary" @click="addEmp">确 定</el-button>
                     </span>
-</el-dialog>
+        </el-dialog>
 
 
-    <!-- 修改用户对话框 -->
-    <el-dialog title="修改分类信息" :visible.sync="editDialogVisible" width="50%" @colse="editDialogClosed">
-      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="80px">
-        <!-- 分类ID -->
-        <el-form-item label="分类ID" prop="spTypeId">
-          <el-input v-model="editForm.spTypeId" :disabled="true"></el-input>
-        </el-form-item>
-        <!-- 分类编号 -->
-        <el-form-item label="分类编号" prop="kindid">
-          <el-input v-model="editForm.kindid"></el-input>
-        </el-form-item>
-        <!-- 分类名称 -->
-        <el-form-item label="分类名称" prop="kindName">
-          <el-input v-model="editForm.kindName"></el-input>
-        </el-form-item>
-        <!-- 分类级别 -->
-        <el-form-item label="分类级别" prop="kindjibie">
-          <el-input v-model="editForm.kindjibie"></el-input>
-        </el-form-item>
-<!--        &lt;!&ndash;分类所属部门&ndash;&gt;-->
-<!--        <el-select v-model="editForm.d_id" size="medium" placeholder="请选择分类所属部门">-->
-<!--          <el-option-->
-<!--            v-for="item in DepartmentList"-->
-<!--            :key="item.id"-->
-<!--            :label="item.d_name"-->
-<!--            :value="item.id">-->
-<!--          </el-option>-->
-<!--        </el-select>-->
-      </el-form>
-      <span slot="footer" class="dialog-footer">
+        <!-- 修改用户对话框 -->
+        <el-dialog title="修改分类信息" :visible.sync="editDialogVisible" width="50%" @colse="editDialogClosed">
+          <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="80px">
+            <!-- 分类ID -->
+            <el-form-item label="分类ID" prop="spTypeId">
+              <el-input v-model="editForm.spTypeId" :disabled="true"></el-input>
+            </el-form-item>
+            <!-- 分类编号 -->
+            <el-form-item label="分类编号" prop="kindid">
+              <el-input v-model="editForm.kindid"></el-input>
+            </el-form-item>
+            <!-- 分类名称 -->
+            <el-form-item label="分类名称" prop="kindName">
+              <el-input v-model="editForm.kindName"></el-input>
+            </el-form-item>
+            <!-- 分类级别 -->
+            <el-form-item label="分类级别" prop="kindjibie">
+              <el-input v-model="editForm.kindjibie"></el-input>
+            </el-form-item>
+            <!--        &lt;!&ndash;分类所属部门&ndash;&gt;-->
+            <!--        <el-select v-model="editForm.d_id" size="medium" placeholder="请选择分类所属部门">-->
+            <!--          <el-option-->
+            <!--            v-for="item in DepartmentList"-->
+            <!--            :key="item.id"-->
+            <!--            :label="item.d_name"-->
+            <!--            :value="item.id">-->
+            <!--          </el-option>-->
+            <!--        </el-select>-->
+          </el-form>
+          <span slot="footer" class="dialog-footer">
                         <el-button @click="editDialogVisible = false">取 消</el-button>
                         <el-button type="primary" @click="editEmpInfo">确 定</el-button>
                     </span>
-    </el-dialog>
-  </el-main>
-  </el-container>
+        </el-dialog>
+      </el-main>
+    </el-container>
 
-</div>
+  </div>
 </template>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <!-- import Vue before Element -->
@@ -123,14 +123,14 @@
   import axios from "axios";
 
   export default {
-    name: "commodity",
+    name: "",
     data() {
       return {
         pageno: 1,
         total:0,
-          cationData: [
-          ],
-          input: '',
+        cationData: [
+        ],
+        input: '',
 // ============================添加分类信息==================
         addDialogVisible: false,// 添加数据对话框：false 隐藏 true 显示
         // 添加分类表单项 请求参数
@@ -259,24 +259,24 @@
           params.append(key,_this.addForm[key]);
         })
         this.$axios.post("/addGoods.action",params).then(res => {
-            _this.$message.success("添加成功!");
-            // 隐藏对话框
-            _this.addDialogVisible = false;
-            _this.getdata() // 数据发生改变重新请求数据
+          _this.$message.success("添加成功!");
+          // 隐藏对话框
+          _this.addDialogVisible = false;
+          _this.getdata() // 数据发生改变重新请求数据
         })
       },
       // ===================添加分类数据结束=================
       // ====删除按钮====
-       deleteEmpInfo(id) {
-         var _this=this;
-       if (confirm("此操作将永久删除该条数据, 是否继续?")){
+      deleteEmpInfo(id) {
+        var _this=this;
+        if (confirm("此操作将永久删除该条数据, 是否继续?")){
           this.$axios.post("/deleteGoods.action?id="+id).then(
             function (response){
               _this.$message.success("删除成功！")
               _this.getdata();
             }
           ).catch()
-       }
+        }
 
       },
       // ====删除方法结束======================
@@ -316,10 +316,10 @@
         })
         this.$axios.post("/updateByGoods.action",params).then(
           function (response){
-              _this.$message.success("修改成功！");
-              //隐藏修改框
-              _this.editDialogVisible = false;
-              _this.getdata();
+            _this.$message.success("修改成功！");
+            //隐藏修改框
+            _this.editDialogVisible = false;
+            _this.getdata();
           }
         ).catch()
 
