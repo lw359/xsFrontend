@@ -12,7 +12,7 @@
       <el-main>
         <div style="margin-top: -55px;left: -500px">
           <el-input
-            placeholder="输入分类编号或分类名称"
+            placeholder="输入商品名称"
             v-model="input"
             clearable style="width: 250px"
             id="goodsName"
@@ -27,18 +27,25 @@
         <el-card style="margin-top: -40px">
           <!--    展示表格数据-->
           <el-table :data="cationData" border style="width: 100%" >
-            <el-table-column prop="spTypeId" label="分类ID" width="180"></el-table-column>
-            <el-table-column prop="kindid" label="分类编号" width="180" ></el-table-column>
-            <el-table-column prop="kindName" label="分类名称"></el-table-column>
-            <el-table-column prop="kindjibie" label="分类级别"></el-table-column>
-            <el-table-column prop="Kind_Stat" label="操作">
+            <el-table-column prop="spId" label="商品ID" width="180">
+
+            </el-table-column>
+            <el-table-column prop="spTypeId" label="商品分类ID" width="180" ></el-table-column>
+            <el-table-column prop="goodsName" label="商品名称"></el-table-column>
+            <el-table-column prop="price" label="单价"></el-table-column>
+            <el-table-column label="图片" >
+              <template slot-scope="scope">
+                <img style="width: 120px;height: 60px" :src="'http://localhost:8090/img/'+scope.row.img">
+              </template>
+            </el-table-column>
+            <el-table-column prop="Stat" label="操作">
               <template slot-scope="scope">
                 <!-- 修改 -->
                 <el-button type="primary" icon="el-icon-edit" size="mini"
-                           @click="showEditDialog(scope.row.spTypeId)">修改</el-button>
+                           @click="showEditDialog(scope.row.spId)">修改</el-button>
                 <!-- 删除 -->
                 <el-button type="danger" icon="el-icon-delete" size="mini"
-                           @click="deleteEmpInfo(scope.row.spTypeId)">删除</el-button>
+                           @click="deleteEmpInfo(scope.row.spId)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -46,8 +53,8 @@
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="100"
+            :page-sizes="[5, 10, 30, 50]"
+            :page-size="pagesize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total">
           </el-pagination>
@@ -129,6 +136,7 @@
     data() {
       return {
         pageno: 1,
+        pagesize:5,
         total:0,
         cationData: [
         ],
@@ -186,9 +194,9 @@
         //加参数
         var params = new URLSearchParams();
         params.append("pageno",this.pageno); //分页
-        params.append("pagesize",5);
-        params.append("KindName",document.getElementById("goodsName").value)
-        this.$axios.post("show.action",params).then(function (response) {
+        params.append("pagesize",this.pagesize);
+        //params.append("KindName",document.getElementById("goodsName").value)
+        this.$axios.post("/showTenanGoods.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
         }).catch();
@@ -198,9 +206,9 @@
         //加参数
         var params = new URLSearchParams();
         params.append("pageno",this.pageno); //分页
-        params.append("pagesize",5);
+        params.append("pagesize",this.pagesize);
         //params.append("KindName",document.getElementById("goodsName").value)
-        this.$axios.post("show.action",params).then(function (response) {
+        this.$axios.post("/showTenanGoods.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
         }).catch();
@@ -238,14 +246,12 @@
       // },
       // 监听pageSize页面大小改变的事件
       handleSizeChange(newSize) {
-        this.findAllEmpParam.pageSize = newSize;
-        console.log("每页多少条数据：", newSize);
+        this.pagesize = newSize;
         this.getdata();// 页面大小发生改变重新请求数据
-        this.$message.success("查询成功！");
       },
       // 监听page当前页改变的事件
       handleCurrentChange(newPage) {
-        this.findAllEmpParam.page = newPage;
+        this.pageno = newPage;
         this.getdata(); // page当前页发生改变重新申请数据
       },
 

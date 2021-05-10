@@ -44,8 +44,8 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="100"
+      :page-sizes="[5, 10, 30, 50]"
+      :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
@@ -93,15 +93,6 @@
         <el-form-item label="分类级别" prop="kindjibie">
           <el-input v-model="editForm.kindjibie"></el-input>
         </el-form-item>
-<!--        &lt;!&ndash;分类所属部门&ndash;&gt;-->
-<!--        <el-select v-model="editForm.d_id" size="medium" placeholder="请选择分类所属部门">-->
-<!--          <el-option-->
-<!--            v-for="item in DepartmentList"-->
-<!--            :key="item.id"-->
-<!--            :label="item.d_name"-->
-<!--            :value="item.id">-->
-<!--          </el-option>-->
-<!--        </el-select>-->
       </el-form>
       <span slot="footer" class="dialog-footer">
                         <el-button @click="editDialogVisible = false">取 消</el-button>
@@ -127,6 +118,7 @@
     data() {
       return {
         pageno: 1,
+        pagesize:5,
         total:0,
           cationData: [
           ],
@@ -184,7 +176,7 @@
         //加参数
         var params = new URLSearchParams();
         params.append("pageno",this.pageno); //分页
-        params.append("pagesize",5);
+        params.append("pagesize",this.pagesize);
         params.append("KindName",document.getElementById("goodsName").value)
         this.$axios.post("show.action",params).then(function (response) {
           _this.cationData=response.data.records;
@@ -196,7 +188,7 @@
         //加参数
         var params = new URLSearchParams();
         params.append("pageno",this.pageno); //分页
-        params.append("pagesize",5);
+        params.append("pagesize",this.pagesize);
         //params.append("KindName",document.getElementById("goodsName").value)
         this.$axios.post("show.action",params).then(function (response) {
           _this.cationData=response.data.records;
@@ -236,14 +228,12 @@
       // },
       // 监听pageSize页面大小改变的事件
       handleSizeChange(newSize) {
-        this.findAllEmpParam.pageSize = newSize;
-        console.log("每页多少条数据：", newSize);
+        this.pagesize = newSize;
         this.getdata();// 页面大小发生改变重新请求数据
-        this.$message.success("查询成功！");
       },
       // 监听page当前页改变的事件
       handleCurrentChange(newPage) {
-        this.findAllEmpParam.page = newPage;
+        this.pageno = newPage;
         this.getdata(); // page当前页发生改变重新申请数据
       },
 
