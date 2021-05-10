@@ -295,7 +295,6 @@
       },
       // ====删除按钮====
        deleteEmpInfo(id) {
-
         // 弹框
         // const confirmResult = await this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
         //   confirmButtonText: '确定',
@@ -309,6 +308,11 @@
         // const {data: res} = await $http.get("/deleteEmp?id=" + id);
         // this.$message.success(res.msg);
         // this.getEmpList();
+         this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示',{
+           confirmButtonText: '确定',
+             cancelButtonText: '取消',
+             type: 'warning'
+         } )
       },
       // ====删除方法结束======================
 
