@@ -19,7 +19,7 @@
           >
           </el-input>
           <el-button type="success" plain @click="getQuery()">查询</el-button>
-          <el-button style="margin-left: 800px" type="danger" @click="addDialogVisible=true">添加</el-button>
+          <el-button style="margin-left: 800px" type="danger" @click="addDialog"  >添加</el-button>
         </div>
         <div>
 
@@ -60,26 +60,80 @@
           </el-pagination>
         </el-card>
         <!--添加分类对话框-->
-        <el-dialog title="添加分类信息" :visible.sync="addDialogVisible" @close="addDialogClosed" width="50%">
-          <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="80px">
-            <!-- 分类编号 -->
-            <el-form-item label="分类编号" prop="kindid">
-              <el-input v-model="addForm.kindid"></el-input>
+        <el-dialog  title="添加商品信息" :visible.sync="addDialogVisible" @close="addDialogClosed" width="50%">
+          <el-form  :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
+            <!-- 商品名称 -->
+            <el-form-item label="商品名称" prop="goodsName" >
+              <el-input v-model="addForm.goodsName"></el-input>
             </el-form-item>
-            <!-- 分类名称 -->
-            <el-form-item label="分类名称" prop="kindName">
-              <el-input v-model="addForm.kindName"></el-input>
+            <!-- 商品单价 -->
+            <el-form-item label="单价" prop="price">
+              <el-input v-model="addForm.price"></el-input>
             </el-form-item>
-            <!-- 分类级别 -->
-            <el-form-item label="分类级别" prop="kindjibie">
-              <el-input v-model="addForm.kindjibie"></el-input>
+            <!-- 商品进价 -->
+            <el-form-item label="进价" prop="purchasePrice">
+              <el-input v-model="addForm.purchasePrice"></el-input>
+            </el-form-item>
+            <!-- 商品数量 -->
+            <el-form-item label="数量" prop="sl">
+              <el-input v-model="addForm.sl"></el-input>
+            </el-form-item>
+            <!-- 商品图片 -->
+            <el-form-item label="图片" prop="img">
+                <input type="file" @change="getFileImage($event)">
+            </el-form-item>
+
+            <!-- 商品颜色 -->
+            <el-form-item label="商品颜色" prop="color">
+              <el-input v-model="addForm.color"></el-input>
+            </el-form-item>
+            <!-- 商品尺码 -->
+            <el-form-item label="商品尺码" prop="size">
+              <el-input v-model="addForm.size"></el-input>
+            </el-form-item>
+            <!-- 商品产地 -->
+            <el-form-item label="商品产地" prop="cpAdress">
+              <el-input v-model="addForm.cpAdress"></el-input>
+            </el-form-item>
+            <!-- 商品分类级别 -->
+              <el-form-item label="商品分类级别" prop="spTypeId">
+                <el-select v-model="jibie.spTypeId" size="medium" clearable  placeholder="请选择商品分类级别">
+                  <el-option
+                    v-for="item in jibie"
+                    :key="item.kindid"
+                    :label="item.kindName"
+                    :value="item.kindid">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            <!-- 供应商 -->
+            <el-form-item label="供应商" prop="gysId">
+              <el-select v-model="gys.gysId" size="medium" clearable  placeholder="请选择供应商">
+                <el-option
+                  v-for="item in gys"
+                  :key="item.gysId"
+                  :label="item.gysName"
+                  :value="item.gysId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <!-- 商户 -->
+            <el-form-item label="商户" prop="sHId">
+              <el-select v-model="sh.sHId" size="medium" clearable  placeholder="请选择商户">
+                <el-option
+                  v-for="item in sh"
+                  :key="item.phone"
+                  :label="item.shangHuName"
+                  :value="item.phone">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-form>
           <!-- 内容底部区域 -->
           <span slot="footer" class="dialog-footer">
                         <el-button @click="addDialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="addEmp">确 定</el-button>
-                    </span>
+                        <el-button type="primary" @click="addEmpSp">确 定</el-button>
+          </span>
         </el-dialog>
 
 
@@ -138,9 +192,16 @@
         pageno: 1,
         pagesize:5,
         total:0,
-        cationData: [
-        ],
+        file:null,
+        //存放展示信息
+        cationData: [],
         input: '',
+        //存放分类级别
+        jibie:[],
+        //存放供应商
+        gys:[],
+        //存放商户
+        sh:[],
 // ============================添加分类信息==================
         addDialogVisible: false,// 添加数据对话框：false 隐藏 true 显示
         // 添加分类表单项 请求参数
@@ -149,14 +210,29 @@
         DepartmentList: [],
         // 添加数据对话框验证规则
         addFormRules: {
-          kindid: [
-            {required: true, message: "分类信息不能为空", trigger: "blur"}
+          goodsName:[
+            {required: true, message: "商品名称不能为空", trigger: "blur"}
           ],
-          kindName: [
-            {required: true, message: "工资不能为空", trigger: "blur"},
+          price: [
+            {required: true, message: "单价不能为空", trigger: "blur"}
           ],
-          kindjibie: [
-            {required: true, message: "年龄不能为空", trigger: "blur"},
+          purchasePrice: [
+            {required: true, message: "进价不能为空", trigger: "blur"},
+          ],
+          img: [
+            {required: true, message: "图片不能为空", trigger: "blur"},
+          ],
+          // color: [
+          //   {required: true, message: "年龄不能为空", trigger: "blur"},
+          // ],
+          // size: [
+          //   {required: true, message: "年龄不能为空", trigger: "blur"},
+          // ],
+          cpAdress: [
+            {required: true, message: "产地不能为空", trigger: "blur"},
+          ],
+          sl: [
+            {required: true, message: "数量不能为空", trigger: "blur"},
           ]
         },
         // =====================修改分类信息==============================
@@ -193,9 +269,10 @@
         var _this =this;
         //加参数
         var params = new URLSearchParams();
-        params.append("pageno",this.pageno); //分页
+        //分页
+        params.append("pageno",this.pageno);
         params.append("pagesize",this.pagesize);
-        //params.append("KindName",document.getElementById("goodsName").value)
+        params.append("name",document.getElementById("goodsName").value)
         this.$axios.post("/showTenanGoods.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
@@ -207,13 +284,11 @@
         var params = new URLSearchParams();
         params.append("pageno",this.pageno); //分页
         params.append("pagesize",this.pagesize);
-        //params.append("KindName",document.getElementById("goodsName").value)
         this.$axios.post("/showTenanGoods.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
         }).catch();
       },
-      //模糊查询
 
       // 获取登录后存入 localStorage 中的 user
       getLoginUser() {
@@ -259,14 +334,40 @@
       addDialogClosed() {
         this.$refs.addFormRef.resetFields();// 重置表单项
       },
-      // 添加分类信息
-      addEmp() {
+      //存放图片文件路径
+      getFileImage(event){
+        this.file = event.target.files[0];
+      },
+      //展示下拉框数据
+      addDialog(){
+        var _this=this;
+        this.addDialogVisible=true;
+        this.$axios.post("/showAllSp.action").then(function (response){
+          _this.jibie=response.data;
+        });
+        this.$axios.post("/showAllGys.action").then(function (response){
+          _this.gys=response.data;
+        });
+        this.$axios.post("/showAllSh.action").then(function (response){
+          _this.sh=response.data;
+        });
+      },
+      // 添加商品信息
+      addEmpSp() {
         var _this=this;
         var params = new URLSearchParams();
-        Object.keys(this.addForm).forEach(function (key){
-          params.append(key,_this.addForm[key]);
-        })
-        this.$axios.post("/addGoods.action",params).then(res => {
+        params.append("goodsName",this.addForm.goodsName);
+        params.append("price",this.addForm.price);
+        params.append("purchasePrice",this.addForm.purchasePrice);
+        params.append("sl",this.addForm.sl);
+        params.append("img",this.file);
+        params.append("color",this.addForm.color);
+        params.append("size",this.addForm.size);
+        params.append("cpAdress",this.addForm.cpAdress);
+        params.append("spTypeId",this.addForm.spTypeId);
+        params.append("gysId",this.addForm.gysId);
+        params.append("sHId",this.addForm.sHId);
+        this.$axios.post("/addTenanGoods.action",params).then(res => {
           _this.$message.success("添加成功!");
           // 隐藏对话框
           _this.addDialogVisible = false;
@@ -359,6 +460,4 @@
   .el-table-column{
     max-height: 30px;
   }
-
-
 </style>
