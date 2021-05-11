@@ -97,18 +97,19 @@
             </el-form-item>
             <!-- 商品分类级别 -->
               <el-form-item label="商品分类级别" prop="spTypeId">
-                <el-select v-model="jibie.spTypeId" size="medium" clearable  placeholder="请选择商品分类级别">
+                <el-select v-model="addForm.spTypeId" size="medium" clearable  placeholder="请选择商品分类级别">
                   <el-option
                     v-for="item in jibie"
-                    :key="item.kindid"
+                    :key="item.spTypeId"
                     :label="item.kindName"
-                    :value="item.kindid">
+                    :value="item.spTypeId"
+                  >
                   </el-option>
                 </el-select>
               </el-form-item>
             <!-- 供应商 -->
             <el-form-item label="供应商" prop="gysId">
-              <el-select v-model="gys.gysId" size="medium" clearable  placeholder="请选择供应商">
+              <el-select v-model="addForm.gysId" size="medium" clearable  placeholder="请选择供应商">
                 <el-option
                   v-for="item in gys"
                   :key="item.gysId"
@@ -119,56 +120,108 @@
             </el-form-item>
             <!-- 商户 -->
             <el-form-item label="商户" prop="sHId">
-              <el-select v-model="sh.sHId" size="medium" clearable  placeholder="请选择商户">
+              <el-select v-model="addForm.sHId" size="medium" clearable  placeholder="请选择商户">
                 <el-option
                   v-for="item in sh"
-                  :key="item.phone"
+                  :key="item.shid"
                   :label="item.shangHuName"
-                  :value="item.phone">
+                  :value="item.shid">
                 </el-option>
               </el-select>
             </el-form-item>
           </el-form>
           <!-- 内容底部区域 -->
           <span slot="footer" class="dialog-footer">
-                        <el-button @click="addDialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="addEmpSp">确 定</el-button>
+            <el-button type="primary" @click="addEmpSp">添 加</el-button>
+            <el-button @click="addDialogVisible = false">取 消</el-button>
           </span>
         </el-dialog>
 
 
         <!-- 修改用户对话框 -->
-        <el-dialog title="修改分类信息" :visible.sync="editDialogVisible" width="50%" @colse="editDialogClosed">
+        <el-dialog title="修改商品信息" :visible.sync="editDialogVisible" width="50%" @colse="editDialogClosed">
           <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="80px">
-            <!-- 分类ID -->
-            <el-form-item label="分类ID" prop="spTypeId">
-              <el-input v-model="editForm.spTypeId" :disabled="true"></el-input>
+            <!-- 商品名称 -->
+            <el-form-item label="商品名称" prop="goodsName" >
+              <el-input v-model="editForm.goodsName"></el-input>
             </el-form-item>
-            <!-- 分类编号 -->
-            <el-form-item label="分类编号" prop="kindid">
-              <el-input v-model="editForm.kindid"></el-input>
+            <!-- 商品单价 -->
+            <el-form-item label="单价" prop="price">
+              <el-input v-model="editForm.price"></el-input>
             </el-form-item>
-            <!-- 分类名称 -->
-            <el-form-item label="分类名称" prop="kindName">
-              <el-input v-model="editForm.kindName"></el-input>
+            <!-- 商品进价 -->
+            <el-form-item label="进价" prop="purchasePrice">
+              <el-input v-model="editForm.purchasePrice"></el-input>
             </el-form-item>
-            <!-- 分类级别 -->
-            <el-form-item label="分类级别" prop="kindjibie">
-              <el-input v-model="editForm.kindjibie"></el-input>
+            <!-- 商品数量 -->
+            <el-form-item label="数量" prop="sl">
+              <el-input v-model="editForm.sl"></el-input>
             </el-form-item>
-            <!--        &lt;!&ndash;分类所属部门&ndash;&gt;-->
-            <!--        <el-select v-model="editForm.d_id" size="medium" placeholder="请选择分类所属部门">-->
-            <!--          <el-option-->
-            <!--            v-for="item in DepartmentList"-->
-            <!--            :key="item.id"-->
-            <!--            :label="item.d_name"-->
-            <!--            :value="item.id">-->
-            <!--          </el-option>-->
-            <!--        </el-select>-->
+            <!-- 商品图片 -->
+            <el-form-item label="图片" prop="img">
+              <input type="file" @change="getFileImage($event)">
+            </el-form-item>
+            <!-- 商品颜色 -->
+            <el-form-item label="商品颜色" prop="color">
+              <el-input v-model="editForm.color"></el-input>
+            </el-form-item>
+            <!-- 商品尺码 -->
+            <el-form-item label="商品尺码" prop="size">
+              <el-input v-model="editForm.size"></el-input>
+            </el-form-item>
+            <!-- 商品产地 -->
+            <el-form-item label="商品产地" prop="cpAdress">
+              <el-input v-model="editForm.cpAdress"></el-input>
+            </el-form-item>
+            <!-- 商品分类级别 -->
+            <el-form-item label="商品分类级别" prop="spTypeId">
+              <el-select v-model="editForm.spTypeId" size="medium" clearable  placeholder="请选择商品分类级别">
+                <el-option
+                  v-for="item in jibie"
+                  :key="item.spTypeId"
+                  :label="item.kindName"
+                  :value="item.spTypeId"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <!-- 供应商 -->
+            <el-form-item label="供应商" prop="gysId">
+              <el-select v-model="editForm.gysId" size="medium" clearable  placeholder="请选择供应商">
+                <el-option
+                  v-for="item in gys"
+                  :key="item.gysId"
+                  :label="item.gysName"
+                  :value="item.gysId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <!-- 商户 -->
+            <el-form-item label="商户" prop="sHId">
+              <el-select v-model="editForm.shid" size="medium" clearable  placeholder="请选择商户">
+                <el-option
+                  v-for="item in sh"
+                  :key="item.shid"
+                  :label="item.shangHuName"
+                  :value="item.shid">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <!-- 上架 -->
+            <el-form-item label="状态" prop="spStat">
+              <el-select v-model="editForm.spStat" size="medium" clearable  placeholder="请选择状态">
+                <el-option
+                  v-for="item in Stated"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
           </el-form>
           <span slot="footer" class="dialog-footer">
-                        <el-button @click="editDialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="editEmpInfo">确 定</el-button>
+             <el-button type="primary" @click="editEmpInfo">保 存</el-button>
+            <el-button @click="editDialogVisible = false">取 消</el-button>
                     </span>
         </el-dialog>
       </el-main>
@@ -202,10 +255,19 @@
         gys:[],
         //存放商户
         sh:[],
+        //存放状态
+        Stated:[
+          {id:"S-001",name:"上架"},
+          {id:"S-002",name:"下架"},
+        ],
 // ============================添加分类信息==================
         addDialogVisible: false,// 添加数据对话框：false 隐藏 true 显示
         // 添加分类表单项 请求参数
-        addForm: {},
+        addForm: {
+          spTypeId: "",
+          gysId: "",
+          sHId: ""
+        },
         // 添加时/(修改时也可复用)查询所有的部门
         DepartmentList: [],
         // 添加数据对话框验证规则
@@ -222,12 +284,6 @@
           img: [
             {required: true, message: "图片不能为空", trigger: "blur"},
           ],
-          // color: [
-          //   {required: true, message: "年龄不能为空", trigger: "blur"},
-          // ],
-          // size: [
-          //   {required: true, message: "年龄不能为空", trigger: "blur"},
-          // ],
           cpAdress: [
             {required: true, message: "产地不能为空", trigger: "blur"},
           ],
@@ -239,7 +295,11 @@
         // 控制修改对话框显示true/隐藏false
         editDialogVisible: false,
         // 修改分类信息
-        editForm: {},
+        editForm: {
+          spStat: "",
+          spId: "",
+          shid: ""
+        },
         // 修改分类表单验证规则
         editFormRules: {
           // name: [
@@ -289,7 +349,6 @@
           _this.total = response.data.total;
         }).catch();
       },
-
       // 获取登录后存入 localStorage 中的 user
       getLoginUser() {
         // 根据 k 拿到登录时存入 localStorage 的 user（json字符串）
@@ -305,20 +364,6 @@
           location.href = './login.html';
         }
       },
-      // 获得所有分类信息
-      // async getEmpList() {
-      //   const {data: res} = await $http.get("/findAllEmp?name=" +
-      //     this.findAllEmpParam.name + "&page=" + this.findAllEmpParam.page + "&pageSize=" + this.findAllEmpParam.pageSize
-      //   );
-      //   console.log("后端返回的分类列表数据：", res);
-      //   if (res != null) {
-      //     this.empList = res.empList;
-      //     this.totals = res.empCounts;
-      //     // this.$message.success("查询成功！");
-      //   } else {
-      //     this.$message.error("分类信息获取失败！");
-      //   }
-      // },
       // 监听pageSize页面大小改变的事件
       handleSizeChange(newSize) {
         this.pagesize = newSize;
@@ -329,7 +374,6 @@
         this.pageno = newPage;
         this.getdata(); // page当前页发生改变重新申请数据
       },
-
       // ============================添加分类信息==================
       addDialogClosed() {
         this.$refs.addFormRef.resetFields();// 重置表单项
@@ -360,7 +404,7 @@
         params.append("price",this.addForm.price);
         params.append("purchasePrice",this.addForm.purchasePrice);
         params.append("sl",this.addForm.sl);
-        params.append("img",this.file);
+        params.append("img",_this.file.name);
         params.append("color",this.addForm.color);
         params.append("size",this.addForm.size);
         params.append("cpAdress",this.addForm.cpAdress);
@@ -379,22 +423,30 @@
       deleteEmpInfo(id) {
         var _this=this;
         if (confirm("此操作将永久删除该条数据, 是否继续?")){
-          this.$axios.post("/deleteGoods.action?id="+id).then(
+          this.$axios.post("/deleteTenance.action?id="+id).then(
             function (response){
               _this.$message.success("删除成功！")
               _this.getdata();
             }
           ).catch()
         }
-
       },
       // ====删除方法结束======================
 
       // =======根据id查询要修改的分类信息：点击修改，展示修改框
-      // scope.row.id拿到要修改数据的id==========
       showEditDialog(id) {
+        this.$axios.post("/showAllSp.action").then(function (response){
+          _this.jibie=response.data;
+        });
+        this.$axios.post("/showAllGys.action").then(function (response){
+          _this.gys=response.data;
+        });
+        this.$axios.post("/showAllSh.action").then(function (response){
+          _this.sh=response.data;
+        });
         var _this =this;
-        this.$axios.post("/queryById.action?id="+id).then(function (response) {
+        this.$axios.post("/queryByidTenan.action?id="+id).then(function (response) {
+          console.log(response.data)
           _this.editForm=response.data;
         }).catch()
         this.editDialogVisible = true;  //显示修改卡片
@@ -405,25 +457,25 @@
       },
       // 修改分类信息
       editEmpInfo() {
-        // this.$refs.editFormRef.validate(async valid => {
-        //   if (!valid) return;
-        //   const {data: res} = await this.$axios.post("/updateByGoods.action", this.editForm);
-        //   console.log("后端返回的res：", res);
-        //   if (res > 0) {
-        //     this.$message.success("修改成功！！！");
-        //     //隐藏修改框
-        //     this.editDialogVisible = false;
-        //     this.getEmpList();
-        //   } else {
-        //     this.$message.error("修改失败！");
-        //   }
-        // });
         var _this=this;
         var params = new URLSearchParams();
-        Object.keys(this.editForm).forEach(function (key){
-          params.append(key,_this.editForm[key]);
-        })
-        this.$axios.post("/updateByGoods.action",params).then(
+        // Object.keys(this.editForm).forEach(function (key){
+        //   params.append(key,_this.editForm[key]);
+        // })
+        params.append("spId",this.editForm.spId);
+        params.append("goodsName",this.editForm.goodsName);
+        params.append("price",this.editForm.price);
+        params.append("purchasePrice",this.editForm.purchasePrice);
+        params.append("sl",this.editForm.sl);
+        params.append("img",_this.file.name);
+        params.append("color",this.editForm.color);
+        params.append("size",this.editForm.size);
+        params.append("cpAdress",this.editForm.cpAdress);
+        params.append("spTypeId",this.editForm.spTypeId);
+        params.append("gysId",this.editForm.gysId);
+        params.append("sHId",this.editForm.shid);
+        params.append("spStat",this.editForm.spStat)
+        this.$axios.post("/updateTenance.action",params).then(
           function (response){
             _this.$message.success("修改成功！");
             //隐藏修改框

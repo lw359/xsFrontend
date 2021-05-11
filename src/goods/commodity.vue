@@ -68,9 +68,9 @@
 </el-form>
   <!-- 内容底部区域 -->
   <span slot="footer" class="dialog-footer">
-                        <el-button @click="addDialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="addEmp">确 定</el-button>
-                    </span>
+   <el-button type="primary" @click="addEmp">添 加</el-button>
+   <el-button @click="addDialogVisible = false">取 消</el-button>
+  </span>
 </el-dialog>
 
 
@@ -95,9 +95,9 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-                        <el-button @click="editDialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="editEmpInfo">确 定</el-button>
-                    </span>
+        <el-button type="primary" @click="editEmpInfo">保 存</el-button>
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+      </span>
     </el-dialog>
   </el-main>
   </el-container>
@@ -212,20 +212,6 @@
           location.href = './login.html';
         }
       },
-      // 获得所有分类信息
-      // async getEmpList() {
-      //   const {data: res} = await $http.get("/findAllEmp?name=" +
-      //     this.findAllEmpParam.name + "&page=" + this.findAllEmpParam.page + "&pageSize=" + this.findAllEmpParam.pageSize
-      //   );
-      //   console.log("后端返回的分类列表数据：", res);
-      //   if (res != null) {
-      //     this.empList = res.empList;
-      //     this.totals = res.empCounts;
-      //     // this.$message.success("查询成功！");
-      //   } else {
-      //     this.$message.error("分类信息获取失败！");
-      //   }
-      // },
       // 监听pageSize页面大小改变的事件
       handleSizeChange(newSize) {
         this.pagesize = newSize;
