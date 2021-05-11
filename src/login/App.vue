@@ -3,7 +3,7 @@
     <el-container style="margin-top: -10px;margin-left: -10px">
       <el-header>
         <el-menu  class="el-menu-demo" mode="horizontal" @select="handleSelect" style="width: 1530px;margin-left: -20px">
-          <el-menu-item><img src="./assets/微信图片_20210429185327.jpg" style="width: 100px;height: 55px"></el-menu-item>
+          <el-menu-item><img src="../assets/微信图片_20210429185327.jpg" style="width: 100px;height: 55px"></el-menu-item>
           <el-menu-item>
             <el-radio-group v-model="isCollapse">
               <el-radio-button :label="false">展开</el-radio-button>
@@ -13,7 +13,20 @@
           <el-menu-item style="margin-top: -18px">
             <h1>并夕夕优选后台管理系统</h1>
           </el-menu-item>
+          <el-menu-item  >
+            <span>当前员工工号：{{username}}</span>
+          </el-menu-item>
+          <el-menu-item>
+            <router-link to="/" class="a">
+              <el-menu-item  >
+                <span>退出登录</span>
+              </el-menu-item>
+            </router-link>
+          </el-menu-item>
+
+
         </el-menu>
+
         <div class="line"></div>
 
 
@@ -22,7 +35,7 @@
         <el-aside width="210px" style="height: 680px">
           <el-menu  class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
             <!--            @click="cmenu"-->
-            <router-link to="/myMain" class="a">
+            <router-link to="/myMain" class="a" >
               <el-menu-item index="1" >
                 <i class="el-icon-location"></i>
                 <span slot="title">首页</span>
@@ -152,8 +165,12 @@
     data () {
       return {
         isCollapse: false,
-        handleSelect:false
+        handleSelect:false,
+        username:'',
       }
+    },
+    created() {
+      this.getdata();
     },
     methods: {
       handleOpen(key, keyPath) {
@@ -164,6 +181,10 @@
       },
       activeIndex() {
 
+      },
+      getdata(){
+        var _this=this;
+        _this.username= sessionStorage.getItem("username");
       }
     },
   }

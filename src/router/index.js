@@ -6,11 +6,12 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter)
 
 import Main from "../compennets/Mymain";
-
-import Login from "../login/login";
 import Commodity from "../goods/commodity"
 import TenanceGoods from "../goods/tenanceGoods";
 import Purchase from "../purchase/PurchaseTable";
+import Vuee from "../login/App";
+import Login from "../login/login";
+import Pd from "../login/Pd";
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
 const originalPush = VueRouter.prototype.push
@@ -19,13 +20,15 @@ VueRouter.prototype.push = function push(location) {
 }
 
 //定义routes路由的集合，数组类型
-const routes = [
-  //单个路由均为对象类型，path代表的是路径，component代表组件
-  {path:'/myMain',component:Main},
-  {path:"/Login",component:Login},
-  {path: "/commodity",component: Commodity},
-  {path: "/tenanceGoods",component: TenanceGoods},
-  {path: "/Purchase",component: Purchase},
+const routes = [{path: "/Vuee",component: Vuee,
+  children:[
+
+    {path:'/myMain',component:Main},
+    {path: "/commodity",component: Commodity},
+    {path: "/tenanceGoods",component: TenanceGoods},
+    {path: "/Purchase",component: Purchase},
+  ]},{path: "/",component: Login}
+  //单个路由均为对象类型，path代表的是路径，component代表组件\
 ]
 
 //实例化VueRouter并将routes添加进去
