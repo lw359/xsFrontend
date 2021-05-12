@@ -23,8 +23,6 @@
               </el-menu-item>
             </router-link>
           </el-menu-item>
-
-
         </el-menu>
 
         <div class="line"></div>
@@ -41,10 +39,6 @@
                 <span slot="title">首页</span>
               </el-menu-item>
             </router-link>
-
-
-
-
             <el-submenu index="2">
               <template slot="title">
                 <i class="el-icon-menu"></i>
@@ -81,17 +75,20 @@
                 <i class="el-icon-s-custom"></i>
                 <span slot="title">用户管理</span>
               </template>
-              <el-menu-item index="1-8">普通用户资料维护</el-menu-item>
+              <router-link to="/Uyonghu" class="a">
+                <el-menu-item index="1-8">普通用户资料维护</el-menu-item>
+              </router-link>
             </el-submenu>
             <el-submenu index="5">
               <template slot="title">
                 <i class="el-icon-setting"></i>
                 <span slot="title">供应商管理</span>
               </template>
-              <el-menu-item index="1-9">供应商信息审核</el-menu-item>
+              <router-link to="/Supplier" class="a">
+                <el-menu-item index="1-9">供应商信息审核</el-menu-item>
+              </router-link>
               <el-menu-item index="2-0">供应商维护</el-menu-item>
             </el-submenu>
-
             <el-submenu index="6">
               <template slot="title">
                 <i class="el-icon-user-solid"></i>

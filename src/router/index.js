@@ -11,7 +11,8 @@ import TenanceGoods from "../goods/tenanceGoods";
 import Purchase from "../purchase/PurchaseTable";
 import Vuee from "../login/App";
 import Login from "../login/login";
-import Pd from "../login/Pd";
+import UYonghu from "../Udata/mainTenance"
+import Supplier from "../supplierManagement/supplier";
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
 const originalPush = VueRouter.prototype.push
@@ -22,11 +23,12 @@ VueRouter.prototype.push = function push(location) {
 //定义routes路由的集合，数组类型
 const routes = [{path: "/Vuee",component: Vuee,
   children:[
-
     {path:'/myMain',component:Main},
     {path: "/commodity",component: Commodity},
     {path: "/tenanceGoods",component: TenanceGoods},
     {path: "/Purchase",component: Purchase},
+    {path: "/Uyonghu",component: UYonghu},
+    {path: "/Supplier",component: Supplier},
   ]},{path: "/",component: Login}
   //单个路由均为对象类型，path代表的是路径，component代表组件\
 ]
