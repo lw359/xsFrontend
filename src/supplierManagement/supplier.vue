@@ -19,7 +19,7 @@
           >
           </el-input>
           <el-button type="success" plain @click="getQuery()">查询</el-button>
-          <el-button style="margin-left: 800px" type="danger" @click="addDialog"  >添加</el-button>
+<!--          <el-button style="margin-left: 800px" type="danger" @click="addDialog"  >添加</el-button>-->
         </div>
         <div>
 
@@ -27,25 +27,37 @@
         <el-card style="margin-top: -40px">
           <!--    展示表格数据-->
           <el-table :data="cationData" border style="width: 100%" >
-            <el-table-column prop="id" label="用户ID" width="120"></el-table-column>
-            <el-table-column prop="username" label="用户名" width="150" ></el-table-column>
-
-            <el-table-column prop="status" label="状态"  width="110"></el-table-column>
-            <el-table-column prop="iphone" label="电话" width="150" ></el-table-column>
-            <el-table-column prop="email" label="邮箱"></el-table-column>
-            <el-table-column label="头像" >
+            <el-table-column prop="supId" label="供应商编号" width="150">
               <template slot-scope="scope">
-                <img style="width: 120px;height: 60px" :src="'http://localhost:8090/img/'+scope.row.img">
+                <router-link :to="{path:'/supplierDetails',query:{id:scope.row.gysId}}" class="a" >
+                  {{ scope.row.supId }}
+                </router-link>
+              </template>
+            </el-table-column>
+            <el-table-column prop="gysName" label="供应商名称"  ></el-table-column>
+            <el-table-column prop="supName" label="联系人"  ></el-table-column>
+            <el-table-column prop="auditState" label="审核状态">
+              <template slot-scope="scope">
+              <span v-if="scope.row.auditState=='G-001'">未审核</span>
+              <span v-if="scope.row.auditState=='G-002'">审核通过</span>
+              <span v-if="scope.row.auditState=='G-003'">审核不通过</span>
               </template>
             </el-table-column>
             <el-table-column prop="Stat" label="操作">
               <template slot-scope="scope">
                 <!-- 修改 -->
-                <el-button type="primary" icon="el-icon-edit" size="mini"
-                           @click="showEditDialog(scope.row.id)">修改</el-button>
+                <el-button type="danger" icon="el-icon-edit" size="mini"
+                           v-if="scope.row.auditState=='G-001'"
+                           @click="showEditDialog(scope.row.gysId)">审核</el-button>
+                <el-button type="primary"size="mini"
+                           v-if="scope.row.auditState=='G-002'"
+                           >已审核</el-button>
+                <el-button type="success" icon="el-icon-edit" size="mini"
+                           v-if="scope.row.auditState=='G-003'"
+                           @click="showEditDialog(scope.row.gysId)">重新审核</el-button>
                 <!-- 删除 -->
-                <el-button type="danger" icon="el-icon-delete" size="mini"
-                           @click="deleteEmpInfo(scope.row.id)">删除</el-button>
+<!--                <el-button type="danger" icon="el-icon-delete" size="mini"-->
+<!--                           @click="deleteEmpInfo(scope.row.supId)">删除</el-button>-->
               </template>
             </el-table-column>
           </el-table>
@@ -92,35 +104,39 @@
 
 
         <!-- 修改用户对话框 -->
-        <el-dialog title="修改商品信息" :visible.sync="editDialogVisible" width="50%" @colse="editDialogClosed">
-          <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="80px">
+        <el-dialog title="审核供应商信息" :visible.sync="editDialogVisible" width="50%" @colse="editDialogClosed">
+          <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
             <!-- ID -->
-            <el-form-item label="ID" prop="id" >
-              <el-input v-model="editForm.id" :disabled="true"></el-input>
+            <el-form-item label="ID" prop="gysId" >
+              <el-input v-model="editForm.gysId" :disabled="true"></el-input>
             </el-form-item>
-            <!-- 用户名 -->
-            <el-form-item label="用户名" prop="username" >
-              <el-input v-model="editForm.username"></el-input>
+            <!-- 供应商编号 -->
+            <el-form-item label="供应商编号" prop="supId" >
+              <el-input v-model="editForm.supId" ></el-input>
             </el-form-item>
-            <!-- 密码 -->
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="editForm.password"  show-password></el-input>
+            <!-- 供应商名称 -->
+            <el-form-item label="供应商名称" prop="gysName" >
+              <el-input v-model="editForm.gysName"></el-input>
             </el-form-item>
-            <!-- 电话 -->
-            <el-form-item label="电话" prop="iphone">
-              <el-input v-model="editForm.iphone"></el-input>
+            <!-- 电话号码 -->
+            <el-form-item label="电话号码" prop="phone">
+              <el-input v-model="editForm.phone"></el-input>
             </el-form-item>
-            <!-- 邮箱 -->
-            <el-form-item label="邮箱" prop="email">
-              <el-input v-model="editForm.email"></el-input>
+            <!-- 联系人 -->
+            <el-form-item label="联系人" prop="supName">
+              <el-input v-model="editForm.supName"></el-input>
             </el-form-item>
-            <!-- 头像 -->
-            <el-form-item label="头像" prop="photo">
-              <input type="file" @change="getFileImage($event)">
+            <!-- 联系电话 -->
+            <el-form-item label="联系电话" prop="supPhone">
+              <el-input v-model="editForm.supPhone"></el-input>
             </el-form-item>
-            <!-- 状态 -->
-            <el-form-item label="状态" prop="status">
-              <el-select v-model="editForm.status" size="medium" clearable  placeholder="请选择状态">
+            <!-- 联系地址 -->
+            <el-form-item label="联系地址" prop="supAddress">
+              <el-input v-model="editForm.supAddress"></el-input>
+            </el-form-item>
+            <!-- 审核状态 -->
+            <el-form-item label="审核状态" prop="auditState">
+              <el-select v-model="editForm.auditState" size="medium" clearable  placeholder="请选择状态">
                 <el-option
                   v-for="item in Stated"
                   :key="item.id"
@@ -162,9 +178,10 @@
         input: '',
         //存放状态
         Stated:[
-          {id:"U-001",name:"可用"},
-          {id:"U-002",name:"注销"},
-        ],
+          {id:"G-001",name:"未审核"},
+          {id:"G-002",name:"审核通过"},
+          {id:"G-003",name:"审核不通过"}
+    ],
 // ============================添加分类信息==================
         addDialogVisible: false,// 添加数据对话框：false 隐藏 true 显示
         // 添加分类表单项 请求参数
@@ -193,23 +210,28 @@
         editDialogVisible: false,
         // 修改分类信息
         editForm: {
-          spStat: "",
-          spId: "",
-          shid: ""
+          auditState: ""
         },
         // 修改分类表单验证规则
         editFormRules: {
-          // name: [
-          //     {required: true, message: "分类姓名不能为空", trigger: "blur"}
-          // ],
-          // salary: [
-          //     {required: true, message: "工资不能为空", trigger: "blur"},
-          //     {min: 0, max: 10, message: "长度在 1 ~ 10 个字符", trigger: "blur"}
-          // ],
-          // age: [
-          //     {required: true, message: "年龄不能为空", trigger: "blur"},
-          //     {min: 1, max: 3, message: "长度在 1 ~ 3 个字符", trigger: "blur"}
-          // ]
+          supId: [
+              {required: true, message: "供应商编号不能为空", trigger: "blur"}
+          ],
+          gysName: [
+              {required: true, message: "供应商名称不能为空", trigger: "blur"},
+          ],
+          phone: [
+              {required: true, message: "电话不能为空", trigger: "blur"},
+          ],
+          supName: [
+            {required: true, message: "联系人不能为空", trigger: "blur"},
+          ],
+          supPhone: [
+            {required: true, message: "联系电话不能为空", trigger: "blur"},
+          ],
+          supAddress: [
+            {required: true, message: "联系地址不能为空", trigger: "blur"},
+          ]
         },
       }
     },
@@ -230,7 +252,7 @@
         params.append("pageno",this.pageno);
         params.append("pagesize",this.pagesize);
         params.append("name",document.getElementById("goodsName").value)
-        this.$axios.post("/showTenanUsersMh.action",params).then(function (response) {
+        this.$axios.post("/showByIdSupp.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
         }).catch();
@@ -241,10 +263,14 @@
         var params = new URLSearchParams();
         params.append("pageno",this.pageno); //分页
         params.append("pagesize",this.pagesize);
-        this.$axios.post("/showTenanUsers.action",params).then(function (response) {
+        this.$axios.post("/showAllSupplier.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
         }).catch();
+      },
+      //跳转界面拿id
+      ShowId(id){
+        this.$router.push({path:"/supplierDetails",query: {id:id}});
       },
       // 获取登录后存入 localStorage 中的 user
       getLoginUser() {
@@ -318,7 +344,7 @@
       // =======根据id查询要修改的分类信息：点击修改，展示修改框
       showEditDialog(id) {
         var _this =this;
-        this.$axios.post("/queryByidUser.action?id="+id).then(function (response) {
+        this.$axios.post("/queryByidSupplier.action?id="+id).then(function (response) {
           console.log(response.data)
           _this.editForm=response.data;
         }).catch()
@@ -332,19 +358,24 @@
       editEmpInfo() {
         var _this=this;
         var params = new URLSearchParams();
-        params.append("ID",this.editForm.id);
-        params.append("username",this.editForm.username);
-        params.append("password",this.editForm.password);
-        params.append("iPhone",this.editForm.iphone);
-        params.append("email",this.editForm.email);
-        params.append("status",this.editForm.status);
-        params.append("img",_this.file.name);
-        this.$axios.post("/updateUser.action",params).then(
+        params.append("gysId",this.editForm.gysId);
+        params.append("supId",this.editForm.supId);
+        params.append("gysName",this.editForm.gysName);
+        params.append("phone",this.editForm.phone);
+        params.append("supName",this.editForm.supName);
+        params.append("supPhone",this.editForm.supPhone);
+        params.append("supAddress",this.editForm.supAddress);
+        params.append("auditState",this.editForm.auditState)
+        this.$axios.post("/updateSupplier.action",params).then(
           function (response){
-            _this.$message.success("修改成功！");
-            //隐藏修改框
-            _this.editDialogVisible = false;
-            _this.getdata();
+           if(response.data>0){
+             _this.$message.success("状态修订成功！");
+             //隐藏修改框
+             _this.editDialogVisible = false;
+             _this.getdata();
+           }else{
+             _this.$message.success("状态修订失败！");
+           }
           }
         ).catch()
 
