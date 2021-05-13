@@ -19,7 +19,7 @@
           >
           </el-input>
           <el-button type="success" plain @click="getQuery()">查询</el-button>
-          <el-button style="margin-left: 800px" type="info" @click="addDialog"  >添加</el-button>
+          <el-button style="margin-left: 800px" type="info" @click="addDialog">添加</el-button>
         </div>
         <div>
 
@@ -38,13 +38,13 @@
             <el-table-column prop="phone" label="电话"  ></el-table-column>
             <el-table-column prop="supName" label="联系人"  ></el-table-column>
             <el-table-column prop="supAddress" label="联系地址"  ></el-table-column>
-<!--            <el-table-column prop="auditState" label="审核状态">-->
-<!--              <template slot-scope="scope">-->
-<!--                <span v-if="scope.row.auditState=='G-001'">未审核</span>-->
-<!--                <span v-if="scope.row.auditState=='G-002'">审核通过</span>-->
-<!--                <span v-if="scope.row.auditState=='G-003'">审核不通过</span>-->
-<!--              </template>-->
-<!--            </el-table-column>-->
+            <!--            <el-table-column prop="auditState" label="审核状态">-->
+            <!--              <template slot-scope="scope">-->
+            <!--                <span v-if="scope.row.auditState=='G-001'">未审核</span>-->
+            <!--                <span v-if="scope.row.auditState=='G-002'">审核通过</span>-->
+            <!--                <span v-if="scope.row.auditState=='G-003'">审核不通过</span>-->
+            <!--              </template>-->
+            <!--            </el-table-column>-->
             <el-table-column prop="Stat" label="操作">
               <template slot-scope="scope">
                 <!-- 修改 -->
@@ -52,7 +52,7 @@
                            @click="showEditDialog(scope.row.gysId)">修改</el-button>
                 <!-- 删除 -->
                 <el-button round type="danger" icon="el-icon-delete" size="mini"
-                 @click="deleteEmpInfo(scope.row.supId)">删除</el-button>
+                           @click="deleteEmpInfo(scope.row.gysId)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -69,73 +69,35 @@
         <!--添加分类对话框-->
         <el-dialog  title="添加供应商信息" :visible.sync="addDialogVisible" @close="addDialogClosed" width="50%">
           <el-form  :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
-            <!-- 商品名称 -->
-            <el-form-item label="商品名称" prop="goodsName" >
-              <el-input v-model="addForm.goodsName"></el-input>
+            <!-- 供应商编号 -->
+            <el-form-item label="供应商编号" prop="supId" >
+              <el-input v-model="addForm.supId"></el-input>
             </el-form-item>
-            <!-- 商品单价 -->
-            <el-form-item label="商品名称" prop="price">
-              <el-input v-model="addForm.price"></el-input>
+            <!-- 供应商名称 -->
+            <el-form-item label="供应商名称" prop="gysName">
+              <el-input v-model="addForm.gysName"></el-input>
             </el-form-item>
-            <!-- 商品进价 -->
-            <el-form-item label="进价" prop="purchasePrice">
-              <el-input v-model="addForm.purchasePrice"></el-input>
-            </el-form-item>
-            <!-- 商品数量 -->
-            <el-form-item label="数量" prop="sl">
-              <el-input v-model="addForm.sl"></el-input>
-            </el-form-item>
-            <!-- 商品图片 -->
-            <el-form-item label="图片" prop="img">
-              <input type="file" @change="getFileImage($event)">
+            <!-- 供应商电话 -->
+            <el-form-item label="供应商电话" prop="phone">
+              <el-input v-model="addForm.phone"></el-input>
             </el-form-item>
 
-            <!-- 商品颜色 -->
-            <el-form-item label="商品颜色" prop="color">
-              <el-input v-model="addForm.color"></el-input>
+            <!-- 联系人 -->
+            <el-form-item label="联系人" prop="supName">
+              <el-input v-model="addForm.supName"></el-input>
             </el-form-item>
-            <!-- 商品尺码 -->
-            <el-form-item label="商品尺码" prop="size">
-              <el-input v-model="addForm.size"></el-input>
+            <!-- 电话号码 -->
+            <el-form-item label="电话号码" prop="supPhone">
+              <el-input v-model="addForm.supPhone"></el-input>
             </el-form-item>
-            <!-- 商品产地 -->
-            <el-form-item label="商品产地" prop="cpAdress">
-              <el-input v-model="addForm.cpAdress"></el-input>
+            <!-- 联系地址 -->
+            <el-form-item label="联系地址" prop="supAddress">
+              <el-input v-model="addForm.supAddress"></el-input>
             </el-form-item>
-            <!-- 商品分类级别 -->
-            <el-form-item label="商品分类级别" prop="spTypeId">
-              <el-select v-model="addForm.spTypeId" size="medium" clearable  placeholder="请选择商品分类级别">
-                <el-option
-                  v-for="item in jibie"
-                  :key="item.spTypeId"
-                  :label="item.kindName"
-                  :value="item.spTypeId"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <!-- 供应商 -->
-            <el-form-item label="供应商" prop="gysId">
-              <el-select v-model="addForm.gysId" size="medium" clearable  placeholder="请选择供应商">
-                <el-option
-                  v-for="item in gys"
-                  :key="item.gysId"
-                  :label="item.gysName"
-                  :value="item.gysId">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <!-- 商户 -->
-            <el-form-item label="商户" prop="sHId">
-              <el-select v-model="addForm.sHId" size="medium" clearable  placeholder="请选择商户">
-                <el-option
-                  v-for="item in sh"
-                  :key="item.shid"
-                  :label="item.shangHuName"
-                  :value="item.shid">
-                </el-option>
-              </el-select>
-            </el-form-item>
+            <!--            &lt;!&ndash; 审核状态 &ndash;&gt;-->
+            <!--            <el-form-item label="审核状态" prop="auditState">-->
+            <!--              <el-input v-model="addForm.auditState"></el-input>-->
+            <!--            </el-form-item>-->
           </el-form>
           <!-- 内容底部区域 -->
           <span slot="footer" class="dialog-footer">
@@ -147,32 +109,32 @@
 
         <!-- 修改用户对话框 -->
         <el-dialog title="修改供应商信息" :visible.sync="editDialogVisible" width="50%" @colse="editDialogClosed">
-          <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="80px">
-            <!-- 商品名称 -->
+          <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
+            <!-- 供应商编号 -->
             <el-form-item label="供应商编号" prop="supId" >
               <el-input v-model="editForm.supId"></el-input>
             </el-form-item>
-            <!-- 商品单价 -->
+            <!-- 供应商名称 -->
             <el-form-item label="供应商名称" prop="gysName">
               <el-input v-model="editForm.gysName"></el-input>
             </el-form-item>
-            <!-- 商品进价 -->
+            <!-- 电话号码 -->
             <el-form-item label="电话号码" prop="phone">
               <el-input v-model="editForm.phone"></el-input>
             </el-form-item>
-            <!-- 商品数量 -->
+            <!-- 联系人 -->
             <el-form-item label="联系人" prop="supName">
               <el-input v-model="editForm.supName"></el-input>
             </el-form-item>
-            <!-- 商品颜色 -->
+            <!-- 联系人电话 -->
             <el-form-item label="联系人电话" prop="supPhone">
               <el-input v-model="editForm.supPhone"></el-input>
             </el-form-item>
-            <!-- 商品尺码 -->
+            <!-- 联系地址 -->
             <el-form-item label="联系地址" prop="supAddress">
               <el-input v-model="editForm.supAddress"></el-input>
             </el-form-item>
-            <!-- 上架 -->
+            <!-- 状态 -->
             <el-form-item label="状态" prop="tarState">
               <el-select v-model="editForm.tarState" size="medium" clearable  placeholder="请选择状态">
                 <el-option
@@ -216,6 +178,10 @@
           {id:"A-001",name:"可用"},
           {id:"A-002",name:"不可用"}
         ],
+        //存放状态
+        auditStated:[
+          {id:"G-001",name:"未审核"},
+        ],
         //存放展示信息
         cationData: [],
         input: '',
@@ -229,31 +195,30 @@
         addDialogVisible: false,// 添加数据对话框：false 隐藏 true 显示
         // 添加分类表单项 请求参数
         addForm: {
-          spTypeId: "",
-          gysId: "",
-          sHId: ""
+
+
         },
         // 添加时/(修改时也可复用)查询所有的部门
         DepartmentList: [],
         // 添加数据对话框验证规则
         addFormRules: {
-          gysName:[
-            {required: true, message: "商品名称不能为空", trigger: "blur"}
+          supId:[
+            {required: true, message: "请输入供应商编号", trigger: "blur"}
           ],
-          price: [
-            {required: true, message: "单价不能为空", trigger: "blur"}
+          gysName: [
+            {required: true, message: "请输入供应商名称", trigger: "blur"}
           ],
-          purchasePrice: [
-            {required: true, message: "进价不能为空", trigger: "blur"},
+          phone: [
+            {required: true, message: "请输入供应商电话", trigger: "blur"},
           ],
-          img: [
-            {required: true, message: "图片不能为空", trigger: "blur"},
+          supName: [
+            {required: true, message: "请输入联系人", trigger: "blur"},
           ],
-          cpAdress: [
-            {required: true, message: "产地不能为空", trigger: "blur"},
+          supPhone: [
+            {required: true, message: "请输入联系人电话", trigger: "blur"},
           ],
-          sl: [
-            {required: true, message: "数量不能为空", trigger: "blur"},
+          supAddress: [
+            {required: true, message: "请输入地址", trigger: "blur"},
           ]
         },
         // =====================修改分类信息==============================
@@ -352,28 +317,24 @@
       addDialog(){
         var _this=this;
         this.addDialogVisible=true;
-        this.$axios.post("/showAllSp.action").then(function (response){
-          _this.jibie=response.data;
-        });
-        this.$axios.post("/showAllGys.action").then(function (response){
-          _this.gys=response.data;
-        });
-        this.$axios.post("/showAllSh.action").then(function (response){
-          _this.sh=response.data;
-        });
+        // this.$axios.post("/showAllSp.action").then(function (response){
+        //     _this.jibie=response.data;
+        // });
+        // this.$axios.post("/showAllGys.action").then(function (response){
+        //     _this.gys=response.data;
+        // });
+        // this.$axios.post("/showAllSh.action").then(function (response){
+        //     _this.sh=response.data;
+        // });
       },
       // 添加商品信息
       addEmpSp() {
         var _this=this;
         var params = new URLSearchParams();
-        params.append("gysId",this.addForm.gysId);
-        params.append("gysName",this.addForm.gysName);
-        params.append("phone",this.addForm.phone);
-        params.append("supName",this.addForm.supName);
-        params.append("supPhone",this.addForm.supPhone);
-        params.append("auditState",this.addForm.auditState);
-        params.append("tarState",this.addForm.tarState);
-        this.$axios.post("/addTenanGoods.action",params).then(res => {
+        Object.keys(this.addForm).forEach(function (key){
+          params.append(key,_this.addForm[key]);
+        })
+        this.$axios.post("/addSupplier.action",params).then(res => {
           _this.$message.success("添加成功!");
           // 隐藏对话框
           _this.addDialogVisible = false;
@@ -385,7 +346,7 @@
       deleteEmpInfo(id) {
         var _this=this;
         if (confirm("此操作将永久删除该条数据, 是否继续?")){
-          this.$axios.post("/deleteTenance.action?id="+id).then(
+          this.$axios.post("/deleteGysh.action?gysId="+id).then(
             function (response){
               _this.$message.success("删除成功！")
               _this.getdata();
@@ -397,17 +358,17 @@
 
       // =======根据id查询要修改的分类信息：点击修改，展示修改框
       showEditDialog(id) {
-        this.$axios.post("/showAllSp.action").then(function (response){
-          _this.jibie=response.data;
-        });
-        this.$axios.post("/showAllGys.action").then(function (response){
-          _this.gys=response.data;
-        });
-        this.$axios.post("/showAllSh.action").then(function (response){
-          _this.sh=response.data;
-        });
+        // this.$axios.post("/showAllSp.action").then(function (response){
+        //     _this.jibie=response.data;
+        // });
+        // this.$axios.post("/showAllGys.action").then(function (response){
+        //     _this.gys=response.data;
+        // });
+        // this.$axios.post("/showAllSh.action").then(function (response){
+        //     _this.sh=response.data;
+        // });
         var _this =this;
-        this.$axios.post("/queryByidTenan.action?id="+id).then(function (response) {
+        this.$axios.post("/queryByidGys.action?gysId="+id).then(function (response) {
           console.log(response.data)
           _this.editForm=response.data;
         }).catch()
@@ -429,8 +390,9 @@
         params.append("phone",this.editForm.phone);
         params.append("supName",this.editForm.supName);
         params.append("supPhone",this.editForm.supPhone);
+        params.append("supAddress",this.editForm.supAddress);
         params.append("tarState",this.editForm.tarState);
-        this.$axios.post("/updateTenance.action",params).then(
+        this.$axios.post("/updateGyingshang.action",params).then(
           function (response){
             _this.$message.success("修改成功！");
             //隐藏修改框
