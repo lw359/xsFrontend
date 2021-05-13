@@ -3,7 +3,7 @@
     <el-header>
       <el-menu  class="el-menu-demo" mode="horizontal"style="width: 100%;margin-left: -20px">
         <el-menu-item style="margin-top: -18px">
-          <h1>供应商管理 > 供应商信息审核 > 供应商详情信息</h1>
+          <h1>供应商管理 >  供应商详情信息</h1>
         </el-menu-item>
       </el-menu>
       <div class="line"></div>

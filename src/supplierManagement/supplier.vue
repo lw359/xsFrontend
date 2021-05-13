@@ -10,7 +10,7 @@
         <div class="line"></div>
       </el-header>
       <el-main>
-        <div style="margin-top: -55px;left: -500px">
+        <div style="margin-top: 0px;left: -500px">
           <el-input
             placeholder="输入供应商名称"
             v-model="input"
@@ -18,13 +18,13 @@
             id="goodsName"
           >
           </el-input>
-          <el-button type="success" plain @click="getQuery()">查询</el-button>
+          <el-button  type="success" plain @click="getQuery()">查询</el-button>
 <!--          <el-button style="margin-left: 800px" type="danger" @click="addDialog"  >添加</el-button>-->
         </div>
         <div>
 
         </div>
-        <el-card style="margin-top: -40px">
+        <el-card style="margin-top: 50px">
           <!--    展示表格数据-->
           <el-table :data="cationData" border style="width: 100%" >
             <el-table-column prop="supId" label="供应商编号" width="150">
@@ -46,13 +46,13 @@
             <el-table-column prop="Stat" label="操作">
               <template slot-scope="scope">
                 <!-- 修改 -->
-                <el-button type="danger" icon="el-icon-edit" size="mini"
+                <el-button round type="danger" icon="el-icon-edit" size="mini"
                            v-if="scope.row.auditState=='G-001'"
                            @click="showEditDialog(scope.row.gysId)">审核</el-button>
-                <el-button type="primary"size="mini"
+                <el-button round type="primary"size="mini"
                            v-if="scope.row.auditState=='G-002'"
                            >已审核</el-button>
-                <el-button type="success" icon="el-icon-edit" size="mini"
+                <el-button round type="success" icon="el-icon-edit" size="mini"
                            v-if="scope.row.auditState=='G-003'"
                            @click="showEditDialog(scope.row.gysId)">重新审核</el-button>
                 <!-- 删除 -->
@@ -263,7 +263,7 @@
         var params = new URLSearchParams();
         params.append("pageno",this.pageno); //分页
         params.append("pagesize",this.pagesize);
-        this.$axios.post("/showAllSupplier.action",params).then(function (response) {
+        this.$axios.post("/showAllSup.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
         }).catch();

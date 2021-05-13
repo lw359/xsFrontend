@@ -87,7 +87,9 @@
               <router-link to="/Supplier" class="a">
                 <el-menu-item index="1-9">供应商信息审核</el-menu-item>
               </router-link>
-              <el-menu-item index="2-0">供应商维护</el-menu-item>
+              <router-link to="/supplierMain" class="a">
+                <el-menu-item index="2-0">供应商信息维护</el-menu-item>
+              </router-link>
             </el-submenu>
             <el-submenu index="6">
               <template slot="title">
@@ -200,8 +202,8 @@
   .el-main {
     /*background-color: yellow;*/
     color: #333;
-    text-align: center;
-    line-height: 160px;
+    /*text-align: center;*/
+    /*line-height: 160px;*/
   }
 
   body > .el-container {

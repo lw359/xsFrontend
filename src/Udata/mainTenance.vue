@@ -10,7 +10,7 @@
         <div class="line"></div>
       </el-header>
       <el-main>
-        <div style="margin-top: -55px;left: -500px">
+        <div style="margin-top: 0px;left: -500px">
           <el-input
             placeholder="输入用户名称"
             v-model="input"
@@ -19,12 +19,12 @@
           >
           </el-input>
           <el-button type="success" plain @click="getQuery()">查询</el-button>
-          <el-button style="margin-left: 800px" type="danger" @click="addDialog"  >添加</el-button>
+          <el-button style="margin-left: 800px" type="info" @click="addDialog"  >添加</el-button>
         </div>
         <div>
 
         </div>
-        <el-card style="margin-top: -40px">
+        <el-card style="margin-top: 50px">
           <!--    展示表格数据-->
           <el-table :data="cationData" border style="width: 100%" >
             <el-table-column prop="id" label="用户ID" width="120"></el-table-column>
@@ -41,10 +41,10 @@
             <el-table-column prop="Stat" label="操作">
               <template slot-scope="scope">
                 <!-- 修改 -->
-                <el-button type="primary" icon="el-icon-edit" size="mini"
+                <el-button round type="primary" icon="el-icon-edit" size="mini"
                            @click="showEditDialog(scope.row.id)">修改</el-button>
                 <!-- 删除 -->
-                <el-button type="danger" icon="el-icon-delete" size="mini"
+                <el-button round type="danger" icon="el-icon-delete" size="mini"
                            @click="deleteEmpInfo(scope.row.id)">删除</el-button>
               </template>
             </el-table-column>
