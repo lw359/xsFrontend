@@ -64,10 +64,10 @@
                 <span slot="title">商品资料维护</span>
               </template>
               <router-link to="/commodity" class="a">
-              <el-menu-item index="1-6">商品分类信息维护</el-menu-item>
+                <el-menu-item index="1-6">商品分类信息维护</el-menu-item>
               </router-link>
               <router-link to="/tenanceGoods" class="a">
-              <el-menu-item index="1-7">商品信息维护</el-menu-item>
+                <el-menu-item index="1-7">商品信息维护</el-menu-item>
               </router-link>
             </el-submenu>
             <el-submenu index="4">
@@ -91,14 +91,20 @@
                 <el-menu-item index="2-0">供应商信息维护</el-menu-item>
               </router-link>
             </el-submenu>
+
             <el-submenu index="6">
               <template slot="title">
                 <i class="el-icon-user-solid"></i>
                 <span slot="title">商户管理</span>
               </template>
-              <el-menu-item index="2-0">商户信息审核</el-menu-item>
-              <el-menu-item index="2-1">商户信息维护</el-menu-item>
+              <router-link to="/merchants" class="a">
+                <el-menu-item index="2-0">商户信息审核</el-menu-item>
+              </router-link>
+              <router-link to="/merchantsMain" class="a">
+                <el-menu-item index="2-1">商户信息维护</el-menu-item>
+              </router-link>
             </el-submenu>
+
 
             <el-submenu index="7">
               <template slot="title">
@@ -114,7 +120,7 @@
                 <span slot="title">统计管理</span>
               </template>
               <router-link to="/Purchase" class="a">
-              <el-menu-item index="2-3">采购申请</el-menu-item>
+                <el-menu-item index="2-3">采购申请</el-menu-item>
               </router-link>
               <el-menu-item index="2-4">采购申请记录</el-menu-item>
               <el-menu-item index="2-5">采购申请审核</el-menu-item>
@@ -173,10 +179,10 @@
     },
     methods: {
       handleOpen(key, keyPath) {
-       // console.log(key, keyPath);
+        // console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
-       // console.log(key, keyPath);
+        // console.log(key, keyPath);
       },
       activeIndex() {
 
