@@ -46,11 +46,18 @@
               </template>
               <el-menu-item-group>
                 <span slot="title">公司</span>
-                <router-link to="/myMain" class="a">
+                <router-link to="/staff" class="a">
                   <el-menu-item index="1-1">员工管理</el-menu-item>
                 </router-link>
+
+                <router-link to="/roles" class="a">
                 <el-menu-item index="1-2">角色管理</el-menu-item>
+                </router-link>
+
+                <router-link to="/#" class="a">
                 <el-menu-item index="1-3">权限管理</el-menu-item>
+                </router-link>
+
               </el-menu-item-group>
               <el-menu-item-group title="系统">
                 <el-menu-item index="1-4">菜单管理</el-menu-item>
@@ -111,7 +118,9 @@
                 <i class="el-icon-house"></i>
                 <span slot="title">仓库管理</span>
               </template>
-              <el-menu-item index="2-2">仓库信息维护</el-menu-item>
+              <router-link to="/wareMain" class="a">
+                <el-menu-item index="2-2">仓库信息维护</el-menu-item>
+              </router-link>
             </el-submenu>
 
             <el-submenu index="8">
