@@ -99,9 +99,9 @@
             <el-submenu index="8">
               <template slot="title">
                 <i class="el-icon-sell"></i>
-                <span slot="title">采购管理</span>
+                <span slot="title">统计管理</span>
               </template>
-              <router-link to="/Purchase" class="a" >
+              <router-link to="/Purchase" class="a">
               <el-menu-item index="2-3">采购申请</el-menu-item>
               </router-link>
               <el-menu-item index="2-4">采购申请记录</el-menu-item>
@@ -123,9 +123,7 @@
                 <i class="el-icon-suitcase"></i>
                 <span slot="title">配送管理</span>
               </template>
-              <router-link to="/Delivery" class="a" >
               <el-menu-item index="2-9">调拨配送</el-menu-item>
-              </router-link>
             </el-submenu>
 
             <el-submenu index="11">
@@ -184,8 +182,8 @@
   .el-main {
     /*background-color: yellow;*/
     color: #333;
-    /*text-align: center;
-    line-height: 160px;*/
+    text-align: center;
+    line-height: 160px;
   }
 
   body > .el-container {
@@ -200,7 +198,6 @@
   .el-container:nth-child(7) .el-aside {
     line-height: 700px;
   }
-
 
 </style>
 

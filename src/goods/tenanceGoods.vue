@@ -10,35 +10,47 @@
         <div class="line"></div>
       </el-header>
       <el-main>
-        <div style="margin-top: -55px;left: -500px">
+        <div style="margin-top: 0px;left: -500px">
           <el-input
-            placeholder="输入分类编号或分类名称"
+            placeholder="输入商品名称"
             v-model="input"
             clearable style="width: 250px"
             id="goodsName"
           >
           </el-input>
           <el-button type="success" plain @click="getQuery()">查询</el-button>
-          <el-button style="margin-left: 800px" type="danger" @click="addDialogVisible=true">添加</el-button>
+          <el-button style="margin-left: 800px" type="info" @click="addDialog"  >添加</el-button>
         </div>
         <div>
 
         </div>
-        <el-card style="margin-top: -40px">
+        <el-card style="margin-top: 50px">
           <!--    展示表格数据-->
           <el-table :data="cationData" border style="width: 100%" >
-            <el-table-column prop="spTypeId" label="分类ID" width="180"></el-table-column>
-            <el-table-column prop="kindid" label="分类编号" width="180" ></el-table-column>
-            <el-table-column prop="kindName" label="分类名称"></el-table-column>
-            <el-table-column prop="kindjibie" label="分类级别"></el-table-column>
-            <el-table-column prop="Kind_Stat" label="操作">
+              <el-table-column prop="spId" label="商品ID" width="150">
+                <template slot-scope="scope">
+                  <router-link :to="{path:'/tenanceGoodsDetails',query:{id:scope.row.spId}}" class="a" >
+                    {{ scope.row.spId }}
+                  </router-link>
+                </template>
+              </el-table-column>
+
+            <el-table-column prop="spTypeId" label="商品分类ID" width="180" ></el-table-column>
+            <el-table-column prop="goodsName" label="商品名称"></el-table-column>
+            <el-table-column prop="price" label="单价"></el-table-column>
+            <el-table-column label="图片" >
+              <template slot-scope="scope">
+                <img style="width: 120px;height: 60px" :src="'http://localhost:8090/img/'+scope.row.img">
+              </template>
+            </el-table-column>
+            <el-table-column prop="Stat" label="操作">
               <template slot-scope="scope">
                 <!-- 修改 -->
-                <el-button type="primary" icon="el-icon-edit" size="mini"
-                           @click="showEditDialog(scope.row.spTypeId)">修改</el-button>
+                <el-button round type="primary" icon="el-icon-edit" size="mini"
+                           @click="showEditDialog(scope.row.spId)">修改</el-button>
                 <!-- 删除 -->
-                <el-button type="danger" icon="el-icon-delete" size="mini"
-                           @click="deleteEmpInfo(scope.row.spTypeId)">删除</el-button>
+                <el-button round type="danger" icon="el-icon-delete" size="mini"
+                           @click="deleteEmpInfo(scope.row.spId)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -46,68 +58,175 @@
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="100"
+            :page-sizes="[5, 10, 30, 50]"
+            :page-size="pagesize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="total">
           </el-pagination>
         </el-card>
         <!--添加分类对话框-->
-        <el-dialog title="添加分类信息" :visible.sync="addDialogVisible" @close="addDialogClosed" width="50%">
-          <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="80px">
-            <!-- 分类编号 -->
-            <el-form-item label="分类编号" prop="kindid">
-              <el-input v-model="addForm.kindid"></el-input>
+        <el-dialog  title="添加商品信息" :visible.sync="addDialogVisible" @close="addDialogClosed" width="50%">
+          <el-form  :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
+            <!-- 商品名称 -->
+            <el-form-item label="商品名称" prop="goodsName" >
+              <el-input v-model="addForm.goodsName"></el-input>
             </el-form-item>
-            <!-- 分类名称 -->
-            <el-form-item label="分类名称" prop="kindName">
-              <el-input v-model="addForm.kindName"></el-input>
+            <!-- 商品单价 -->
+            <el-form-item label="单价" prop="price">
+              <el-input v-model="addForm.price"></el-input>
             </el-form-item>
-            <!-- 分类级别 -->
-            <el-form-item label="分类级别" prop="kindjibie">
-              <el-input v-model="addForm.kindjibie"></el-input>
+            <!-- 商品进价 -->
+            <el-form-item label="进价" prop="purchasePrice">
+              <el-input v-model="addForm.purchasePrice"></el-input>
+            </el-form-item>
+            <!-- 商品数量 -->
+            <el-form-item label="数量" prop="sl">
+              <el-input v-model="addForm.sl"></el-input>
+            </el-form-item>
+            <!-- 商品图片 -->
+            <el-form-item label="图片" prop="img">
+                <input type="file" @change="getFileImage($event)">
+            </el-form-item>
+
+            <!-- 商品颜色 -->
+            <el-form-item label="商品颜色" prop="color">
+              <el-input v-model="addForm.color"></el-input>
+            </el-form-item>
+            <!-- 商品尺码 -->
+            <el-form-item label="商品尺码" prop="size">
+              <el-input v-model="addForm.size"></el-input>
+            </el-form-item>
+            <!-- 商品产地 -->
+            <el-form-item label="商品产地" prop="cpAdress">
+              <el-input v-model="addForm.cpAdress"></el-input>
+            </el-form-item>
+            <!-- 商品分类级别 -->
+              <el-form-item label="商品分类级别" prop="spTypeId">
+                <el-select v-model="addForm.spTypeId" size="medium" clearable  placeholder="请选择商品分类级别">
+                  <el-option
+                    v-for="item in jibie"
+                    :key="item.spTypeId"
+                    :label="item.kindName"
+                    :value="item.spTypeId"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            <!-- 供应商 -->
+            <el-form-item label="供应商" prop="gysId">
+              <el-select v-model="addForm.gysId" size="medium" clearable  placeholder="请选择供应商">
+                <el-option
+                  v-for="item in gys"
+                  :key="item.gysId"
+                  :label="item.gysName"
+                  :value="item.gysId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <!-- 商户 -->
+            <el-form-item label="商户" prop="sHId">
+              <el-select v-model="addForm.sHId" size="medium" clearable  placeholder="请选择商户">
+                <el-option
+                  v-for="item in sh"
+                  :key="item.shid"
+                  :label="item.shangHuName"
+                  :value="item.shid">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-form>
           <!-- 内容底部区域 -->
           <span slot="footer" class="dialog-footer">
-                        <el-button @click="addDialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="addEmp">确 定</el-button>
-                    </span>
+            <el-button type="primary" @click="addEmpSp">添 加</el-button>
+            <el-button @click="addDialogVisible = false">取 消</el-button>
+          </span>
         </el-dialog>
 
 
         <!-- 修改用户对话框 -->
-        <el-dialog title="修改分类信息" :visible.sync="editDialogVisible" width="50%" @colse="editDialogClosed">
+        <el-dialog title="修改商品信息" :visible.sync="editDialogVisible" width="50%" @colse="editDialogClosed">
           <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="80px">
-            <!-- 分类ID -->
-            <el-form-item label="分类ID" prop="spTypeId">
-              <el-input v-model="editForm.spTypeId" :disabled="true"></el-input>
+            <!-- 商品名称 -->
+            <el-form-item label="商品名称" prop="goodsName" >
+              <el-input v-model="editForm.goodsName"></el-input>
             </el-form-item>
-            <!-- 分类编号 -->
-            <el-form-item label="分类编号" prop="kindid">
-              <el-input v-model="editForm.kindid"></el-input>
+            <!-- 商品单价 -->
+            <el-form-item label="单价" prop="price">
+              <el-input v-model="editForm.price"></el-input>
             </el-form-item>
-            <!-- 分类名称 -->
-            <el-form-item label="分类名称" prop="kindName">
-              <el-input v-model="editForm.kindName"></el-input>
+            <!-- 商品进价 -->
+            <el-form-item label="进价" prop="purchasePrice">
+              <el-input v-model="editForm.purchasePrice"></el-input>
             </el-form-item>
-            <!-- 分类级别 -->
-            <el-form-item label="分类级别" prop="kindjibie">
-              <el-input v-model="editForm.kindjibie"></el-input>
+            <!-- 商品数量 -->
+            <el-form-item label="数量" prop="sl">
+              <el-input v-model="editForm.sl"></el-input>
             </el-form-item>
-            <!--        &lt;!&ndash;分类所属部门&ndash;&gt;-->
-            <!--        <el-select v-model="editForm.d_id" size="medium" placeholder="请选择分类所属部门">-->
-            <!--          <el-option-->
-            <!--            v-for="item in DepartmentList"-->
-            <!--            :key="item.id"-->
-            <!--            :label="item.d_name"-->
-            <!--            :value="item.id">-->
-            <!--          </el-option>-->
-            <!--        </el-select>-->
+            <!-- 商品图片 -->
+            <el-form-item label="图片" prop="img">
+              <input type="file" @change="getFileImage($event)">
+            </el-form-item>
+            <!-- 商品颜色 -->
+            <el-form-item label="商品颜色" prop="color">
+              <el-input v-model="editForm.color"></el-input>
+            </el-form-item>
+            <!-- 商品尺码 -->
+            <el-form-item label="商品尺码" prop="size">
+              <el-input v-model="editForm.size"></el-input>
+            </el-form-item>
+            <!-- 商品产地 -->
+            <el-form-item label="商品产地" prop="cpAdress">
+              <el-input v-model="editForm.cpAdress"></el-input>
+            </el-form-item>
+            <!-- 商品分类级别 -->
+            <el-form-item label="商品分类级别" prop="spTypeId">
+              <el-select v-model="editForm.spTypeId" size="medium" clearable  placeholder="请选择商品分类级别">
+                <el-option
+                  v-for="item in jibie"
+                  :key="item.spTypeId"
+                  :label="item.kindName"
+                  :value="item.spTypeId"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <!-- 供应商 -->
+            <el-form-item label="供应商" prop="gysId">
+              <el-select v-model="editForm.gysId" size="medium" clearable  placeholder="请选择供应商">
+                <el-option
+                  v-for="item in gys"
+                  :key="item.gysId"
+                  :label="item.gysName"
+                  :value="item.gysId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <!-- 商户 -->
+            <el-form-item label="商户" prop="sHId">
+              <el-select v-model="editForm.shid" size="medium" clearable  placeholder="请选择商户">
+                <el-option
+                  v-for="item in sh"
+                  :key="item.shid"
+                  :label="item.shangHuName"
+                  :value="item.shid">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <!-- 上架 -->
+            <el-form-item label="状态" prop="spStat">
+              <el-select v-model="editForm.spStat" size="medium" clearable  placeholder="请选择状态">
+                <el-option
+                  v-for="item in Stated"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
           </el-form>
           <span slot="footer" class="dialog-footer">
-                        <el-button @click="editDialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="editEmpInfo">确 定</el-button>
+             <el-button type="primary" @click="editEmpInfo">保 存</el-button>
+            <el-button @click="editDialogVisible = false">取 消</el-button>
                     </span>
         </el-dialog>
       </el-main>
@@ -129,33 +248,63 @@
     data() {
       return {
         pageno: 1,
+        pagesize:5,
         total:0,
-        cationData: [
-        ],
+        file:null,
+        //存放展示信息
+        cationData: [],
         input: '',
+        //存放分类级别
+        jibie:[],
+        //存放供应商
+        gys:[],
+        //存放商户
+        sh:[],
+        //存放状态
+        Stated:[
+          {id:"S-001",name:"上架"},
+          {id:"S-002",name:"下架"},
+        ],
 // ============================添加分类信息==================
         addDialogVisible: false,// 添加数据对话框：false 隐藏 true 显示
         // 添加分类表单项 请求参数
-        addForm: {},
+        addForm: {
+          spTypeId: "",
+          gysId: "",
+          sHId: ""
+        },
         // 添加时/(修改时也可复用)查询所有的部门
         DepartmentList: [],
         // 添加数据对话框验证规则
         addFormRules: {
-          kindid: [
-            {required: true, message: "分类信息不能为空", trigger: "blur"}
+          goodsName:[
+            {required: true, message: "商品名称不能为空", trigger: "blur"}
           ],
-          kindName: [
-            {required: true, message: "工资不能为空", trigger: "blur"},
+          price: [
+            {required: true, message: "单价不能为空", trigger: "blur"}
           ],
-          kindjibie: [
-            {required: true, message: "年龄不能为空", trigger: "blur"},
+          purchasePrice: [
+            {required: true, message: "进价不能为空", trigger: "blur"},
+          ],
+          img: [
+            {required: true, message: "图片不能为空", trigger: "blur"},
+          ],
+          cpAdress: [
+            {required: true, message: "产地不能为空", trigger: "blur"},
+          ],
+          sl: [
+            {required: true, message: "数量不能为空", trigger: "blur"},
           ]
         },
         // =====================修改分类信息==============================
         // 控制修改对话框显示true/隐藏false
         editDialogVisible: false,
         // 修改分类信息
-        editForm: {},
+        editForm: {
+          spStat: "",
+          spId: "",
+          shid: ""
+        },
         // 修改分类表单验证规则
         editFormRules: {
           // name: [
@@ -185,10 +334,11 @@
         var _this =this;
         //加参数
         var params = new URLSearchParams();
-        params.append("pageno",this.pageno); //分页
-        params.append("pagesize",5);
-        params.append("KindName",document.getElementById("goodsName").value)
-        this.$axios.post("show.action",params).then(function (response) {
+        //分页
+        params.append("pageno",this.pageno);
+        params.append("pagesize",this.pagesize);
+        params.append("name",document.getElementById("goodsName").value)
+        this.$axios.post("/showTenanGoods.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
         }).catch();
@@ -198,15 +348,12 @@
         //加参数
         var params = new URLSearchParams();
         params.append("pageno",this.pageno); //分页
-        params.append("pagesize",5);
-        //params.append("KindName",document.getElementById("goodsName").value)
-        this.$axios.post("show.action",params).then(function (response) {
+        params.append("pagesize",this.pagesize);
+        this.$axios.post("/showTenanGoods.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
         }).catch();
       },
-      //模糊查询
-
       // 获取登录后存入 localStorage 中的 user
       getLoginUser() {
         // 根据 k 拿到登录时存入 localStorage 的 user（json字符串）
@@ -222,45 +369,54 @@
           location.href = './login.html';
         }
       },
-      // 获得所有分类信息
-      // async getEmpList() {
-      //   const {data: res} = await $http.get("/findAllEmp?name=" +
-      //     this.findAllEmpParam.name + "&page=" + this.findAllEmpParam.page + "&pageSize=" + this.findAllEmpParam.pageSize
-      //   );
-      //   console.log("后端返回的分类列表数据：", res);
-      //   if (res != null) {
-      //     this.empList = res.empList;
-      //     this.totals = res.empCounts;
-      //     // this.$message.success("查询成功！");
-      //   } else {
-      //     this.$message.error("分类信息获取失败！");
-      //   }
-      // },
       // 监听pageSize页面大小改变的事件
       handleSizeChange(newSize) {
-        this.findAllEmpParam.pageSize = newSize;
-        console.log("每页多少条数据：", newSize);
+        this.pagesize = newSize;
         this.getdata();// 页面大小发生改变重新请求数据
-        this.$message.success("查询成功！");
       },
       // 监听page当前页改变的事件
       handleCurrentChange(newPage) {
-        this.findAllEmpParam.page = newPage;
+        this.pageno = newPage;
         this.getdata(); // page当前页发生改变重新申请数据
       },
-
       // ============================添加分类信息==================
       addDialogClosed() {
         this.$refs.addFormRef.resetFields();// 重置表单项
       },
-      // 添加分类信息
-      addEmp() {
+      //存放图片文件路径
+      getFileImage(event){
+        this.file = event.target.files[0];
+      },
+      //展示下拉框数据
+      addDialog(){
+        var _this=this;
+        this.addDialogVisible=true;
+        this.$axios.post("/showAllSp.action").then(function (response){
+          _this.jibie=response.data;
+        });
+        this.$axios.post("/showAllGys.action").then(function (response){
+          _this.gys=response.data;
+        });
+        this.$axios.post("/showAllSh.action").then(function (response){
+          _this.sh=response.data;
+        });
+      },
+      // 添加商品信息
+      addEmpSp() {
         var _this=this;
         var params = new URLSearchParams();
-        Object.keys(this.addForm).forEach(function (key){
-          params.append(key,_this.addForm[key]);
-        })
-        this.$axios.post("/addGoods.action",params).then(res => {
+        params.append("goodsName",this.addForm.goodsName);
+        params.append("price",this.addForm.price);
+        params.append("purchasePrice",this.addForm.purchasePrice);
+        params.append("sl",this.addForm.sl);
+        params.append("img",_this.file.name);
+        params.append("color",this.addForm.color);
+        params.append("size",this.addForm.size);
+        params.append("cpAdress",this.addForm.cpAdress);
+        params.append("spTypeId",this.addForm.spTypeId);
+        params.append("gysId",this.addForm.gysId);
+        params.append("sHId",this.addForm.sHId);
+        this.$axios.post("/addTenanGoods.action",params).then(res => {
           _this.$message.success("添加成功!");
           // 隐藏对话框
           _this.addDialogVisible = false;
@@ -272,22 +428,30 @@
       deleteEmpInfo(id) {
         var _this=this;
         if (confirm("此操作将永久删除该条数据, 是否继续?")){
-          this.$axios.post("/deleteGoods.action?id="+id).then(
+          this.$axios.post("/deleteTenance.action?id="+id).then(
             function (response){
               _this.$message.success("删除成功！")
               _this.getdata();
             }
           ).catch()
         }
-
       },
       // ====删除方法结束======================
 
       // =======根据id查询要修改的分类信息：点击修改，展示修改框
-      // scope.row.id拿到要修改数据的id==========
       showEditDialog(id) {
+        this.$axios.post("/showAllSp.action").then(function (response){
+          _this.jibie=response.data;
+        });
+        this.$axios.post("/showAllGys.action").then(function (response){
+          _this.gys=response.data;
+        });
+        this.$axios.post("/showAllSh.action").then(function (response){
+          _this.sh=response.data;
+        });
         var _this =this;
-        this.$axios.post("/queryById.action?id="+id).then(function (response) {
+        this.$axios.post("/queryByidTenan.action?id="+id).then(function (response) {
+          console.log(response.data)
           _this.editForm=response.data;
         }).catch()
         this.editDialogVisible = true;  //显示修改卡片
@@ -298,25 +462,25 @@
       },
       // 修改分类信息
       editEmpInfo() {
-        // this.$refs.editFormRef.validate(async valid => {
-        //   if (!valid) return;
-        //   const {data: res} = await this.$axios.post("/updateByGoods.action", this.editForm);
-        //   console.log("后端返回的res：", res);
-        //   if (res > 0) {
-        //     this.$message.success("修改成功！！！");
-        //     //隐藏修改框
-        //     this.editDialogVisible = false;
-        //     this.getEmpList();
-        //   } else {
-        //     this.$message.error("修改失败！");
-        //   }
-        // });
         var _this=this;
         var params = new URLSearchParams();
-        Object.keys(this.editForm).forEach(function (key){
-          params.append(key,_this.editForm[key]);
-        })
-        this.$axios.post("/updateByGoods.action",params).then(
+        // Object.keys(this.editForm).forEach(function (key){
+        //   params.append(key,_this.editForm[key]);
+        // })
+        params.append("spId",this.editForm.spId);
+        params.append("goodsName",this.editForm.goodsName);
+        params.append("price",this.editForm.price);
+        params.append("purchasePrice",this.editForm.purchasePrice);
+        params.append("sl",this.editForm.sl);
+        params.append("img",_this.file.name);
+        params.append("color",this.editForm.color);
+        params.append("size",this.editForm.size);
+        params.append("cpAdress",this.editForm.cpAdress);
+        params.append("spTypeId",this.editForm.spTypeId);
+        params.append("gysId",this.editForm.gysId);
+        params.append("sHId",this.editForm.shid);
+        params.append("spStat",this.editForm.spStat)
+        this.$axios.post("/updateTenance.action",params).then(
           function (response){
             _this.$message.success("修改成功！");
             //隐藏修改框
@@ -353,6 +517,4 @@
   .el-table-column{
     max-height: 30px;
   }
-
-
 </style>

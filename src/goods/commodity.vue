@@ -10,7 +10,7 @@
     <div class="line"></div>
   </el-header>
   <el-main>
-    <div style="margin-top: -55px;left: -500px">
+    <div style="margin-top: 0px;left: -500px">
       <el-input
         placeholder="输入商品分类名称"
         v-model="input"
@@ -19,23 +19,30 @@
       >
       </el-input>
       <el-button type="success" plain @click="getQuery()">查询</el-button>
-      <el-button style="margin-left: 800px" type="danger" @click="addDialogVisible=true">添加</el-button>
+      <el-button  style="margin-left: 800px" type="info" @click="addDialogVisible=true">添加</el-button>
     </div>
 
-  <el-card style="margin-top: -40px">
+  <el-card style="margin-top: 50px">
 <!--    展示表格数据-->
     <el-table :data="cationData" border style="width: 100%" >
-      <el-table-column prop="spTypeId" label="分类ID" width="180"></el-table-column>
+      <el-table-column prop="spTypeId" label="分类ID" width="150">
+        <template slot-scope="scope">
+          <router-link :to="{path:'/commodityDetails',query:{id:scope.row.spTypeId}}" class="a" >
+            {{ scope.row.spTypeId }}
+          </router-link>
+        </template>
+      </el-table-column>
+<!--      <el-table-column prop="spTypeId" label="分类ID" width="180"></el-table-column>-->
       <el-table-column prop="kindid" label="分类编号" width="180" ></el-table-column>
       <el-table-column prop="kindName" label="分类名称"></el-table-column>
       <el-table-column prop="kindjibie" label="分类级别"></el-table-column>
       <el-table-column prop="Kind_Stat" label="操作">
         <template slot-scope="scope">
           <!-- 修改 -->
-          <el-button type="primary" icon="el-icon-edit" size="mini"
+          <el-button round type="primary" icon="el-icon-edit" size="mini"
                      @click="showEditDialog(scope.row.spTypeId)">修改</el-button>
           <!-- 删除 -->
-          <el-button type="danger" icon="el-icon-delete" size="mini"
+          <el-button round type="danger" icon="el-icon-delete" size="mini"
                      @click="deleteEmpInfo(scope.row.spTypeId)">删除</el-button>
         </template>
       </el-table-column>
@@ -44,8 +51,8 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="100"
+      :page-sizes="[5, 10, 30, 50]"
+      :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
@@ -68,9 +75,9 @@
 </el-form>
   <!-- 内容底部区域 -->
   <span slot="footer" class="dialog-footer">
-                        <el-button @click="addDialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="addEmp">确 定</el-button>
-                    </span>
+   <el-button type="primary" @click="addEmp">添 加</el-button>
+   <el-button @click="addDialogVisible = false">取 消</el-button>
+  </span>
 </el-dialog>
 
 
@@ -93,20 +100,11 @@
         <el-form-item label="分类级别" prop="kindjibie">
           <el-input v-model="editForm.kindjibie"></el-input>
         </el-form-item>
-<!--        &lt;!&ndash;分类所属部门&ndash;&gt;-->
-<!--        <el-select v-model="editForm.d_id" size="medium" placeholder="请选择分类所属部门">-->
-<!--          <el-option-->
-<!--            v-for="item in DepartmentList"-->
-<!--            :key="item.id"-->
-<!--            :label="item.d_name"-->
-<!--            :value="item.id">-->
-<!--          </el-option>-->
-<!--        </el-select>-->
       </el-form>
       <span slot="footer" class="dialog-footer">
-                        <el-button @click="editDialogVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="editEmpInfo">确 定</el-button>
-                    </span>
+        <el-button type="primary" @click="editEmpInfo">保 存</el-button>
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+      </span>
     </el-dialog>
   </el-main>
   </el-container>
@@ -127,6 +125,7 @@
     data() {
       return {
         pageno: 1,
+        pagesize:5,
         total:0,
           cationData: [
           ],
@@ -184,7 +183,7 @@
         //加参数
         var params = new URLSearchParams();
         params.append("pageno",this.pageno); //分页
-        params.append("pagesize",5);
+        params.append("pagesize",this.pagesize);
         params.append("KindName",document.getElementById("goodsName").value)
         this.$axios.post("show.action",params).then(function (response) {
           _this.cationData=response.data.records;
@@ -196,7 +195,7 @@
         //加参数
         var params = new URLSearchParams();
         params.append("pageno",this.pageno); //分页
-        params.append("pagesize",5);
+        params.append("pagesize",this.pagesize);
         //params.append("KindName",document.getElementById("goodsName").value)
         this.$axios.post("show.action",params).then(function (response) {
           _this.cationData=response.data.records;
@@ -220,30 +219,14 @@
           location.href = './login.html';
         }
       },
-      // 获得所有分类信息
-      // async getEmpList() {
-      //   const {data: res} = await $http.get("/findAllEmp?name=" +
-      //     this.findAllEmpParam.name + "&page=" + this.findAllEmpParam.page + "&pageSize=" + this.findAllEmpParam.pageSize
-      //   );
-      //   console.log("后端返回的分类列表数据：", res);
-      //   if (res != null) {
-      //     this.empList = res.empList;
-      //     this.totals = res.empCounts;
-      //     // this.$message.success("查询成功！");
-      //   } else {
-      //     this.$message.error("分类信息获取失败！");
-      //   }
-      // },
       // 监听pageSize页面大小改变的事件
       handleSizeChange(newSize) {
-        this.findAllEmpParam.pageSize = newSize;
-        console.log("每页多少条数据：", newSize);
+        this.pagesize = newSize;
         this.getdata();// 页面大小发生改变重新请求数据
-        this.$message.success("查询成功！");
       },
       // 监听page当前页改变的事件
       handleCurrentChange(newPage) {
-        this.findAllEmpParam.page = newPage;
+        this.pageno = newPage;
         this.getdata(); // page当前页发生改变重新申请数据
       },
 
