@@ -10,37 +10,19 @@
     </el-header>
     <el-main >
       <el-form ref="form" :model="form" label-width="110px">
-        <!-- 仓库编号 -->
-        <el-form-item label="仓库编号" prop="id" >
-          <el-input v-model="form.id" :disabled="true"></el-input>
+        <el-form-item label="角色编号" prop="rid">
+          <el-input v-model="form.rid" :disabled="true"></el-input>
         </el-form-item>
-        <!-- 仓库名称 -->
-        <el-form-item label="仓库名称" prop="kcName" >
-          <el-input v-model="form.kcName" :disabled="true"></el-input>
+        <el-form-item label="角色名称" prop="name">
+          <el-input v-model="form.name" :disabled="true"></el-input>
         </el-form-item>
-        <!-- 商品 -->
-        <el-form-item label="商品" prop="goodsName">
-          <el-input v-model="form.goodsName" :disabled="true"></el-input>
+        <!-- 角色代码 -->
+        <el-form-item label="角色代码" prop="code" >
+          <el-input v-model="form.code" :disabled="true"></el-input>
         </el-form-item>
-        <!-- 仓库最小存储量 -->
-        <el-form-item label="商品最小存储量" prop="minKc">
-          <el-input v-model="form.minKc" :disabled="true"></el-input>
-        </el-form-item>
-        <!-- 仓库最大存储量 -->
-        <el-form-item label="商品最大存储量" prop="maxKc">
-          <el-input v-model="form.maxKc" :disabled="true"></el-input>
-        </el-form-item>
-        <!-- 仓库最小存储量 -->
-        <el-form-item label="仓库最小存储量" prop="amount">
-          <el-input v-model="form.amount" :disabled="true"></el-input>
-        </el-form-item>
-        <!-- 仓库最大存储量 -->
-        <el-form-item label="仓库最大存储量" prop="maxamount">
-          <el-input v-model="form.maxamount" :disabled="true"></el-input>
-        </el-form-item>
-        <!-- 登记人 -->
-        <el-form-item label="登记人" prop="register">
-          <el-input v-model="form.register" :disabled="true"></el-input>
+        <!-- 角色描述 -->
+        <el-form-item label="角色描述" prop="descn">
+          <el-input v-model="form.descn" :disabled="true"></el-input>
         </el-form-item>
         <!-- 审核状态 -->
         <!--        <el-form-item label="审核状态" prop="auditState">-->
@@ -87,7 +69,7 @@
       getId(){
         let id = this.$route.query.id;
         var _this =this;
-        this.$axios.post("/warehouseById.action?id="+id).then(function (response) {
+        this.$axios.post("/queryByidRoles.action?rid="+id).then(function (response) {
           _this.form=response.data;
         }).catch()
       },

@@ -25,7 +25,14 @@
   <el-card style="margin-top: 50px">
 <!--    展示表格数据-->
     <el-table :data="cationData" border style="width: 100%" >
-      <el-table-column prop="spTypeId" label="分类ID" width="180"></el-table-column>
+      <el-table-column prop="spTypeId" label="分类ID" width="150">
+        <template slot-scope="scope">
+          <router-link :to="{path:'/commodityDetails',query:{id:scope.row.spTypeId}}" class="a" >
+            {{ scope.row.spTypeId }}
+          </router-link>
+        </template>
+      </el-table-column>
+<!--      <el-table-column prop="spTypeId" label="分类ID" width="180"></el-table-column>-->
       <el-table-column prop="kindid" label="分类编号" width="180" ></el-table-column>
       <el-table-column prop="kindName" label="分类名称"></el-table-column>
       <el-table-column prop="kindjibie" label="分类级别"></el-table-column>

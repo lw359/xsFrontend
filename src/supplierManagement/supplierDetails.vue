@@ -11,7 +11,7 @@
     <el-main>
       <el-form ref="form" :model="form" label-width="100px">
         <!-- ID -->
-        <el-form-item label="ID" prop="gysId" >
+        <el-form-item label="供应商ID" prop="gysId" >
           <el-input v-model="form.gysId" :disabled="true"></el-input>
         </el-form-item>
         <!-- 供应商编号 -->

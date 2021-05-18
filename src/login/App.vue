@@ -4,12 +4,12 @@
       <el-header>
         <el-menu  class="el-menu-demo" mode="horizontal" @select="handleSelect" style="width: 1530px;margin-left: -20px">
           <el-menu-item><img src="../assets/微信图片_20210429185327.jpg" style="width: 100px;height: 55px"></el-menu-item>
-          <el-menu-item>
-            <el-radio-group v-model="isCollapse">
-              <el-radio-button :label="false">展开</el-radio-button>
-              <el-radio-button :label="true">收起</el-radio-button>
-            </el-radio-group>
-          </el-menu-item>
+<!--          <el-menu-item>-->
+<!--            <el-radio-group v-model="isCollapse">-->
+<!--              <el-radio-button :label="false">展开</el-radio-button>-->
+<!--              <el-radio-button :label="true">收起</el-radio-button>-->
+<!--            </el-radio-group>-->
+<!--          </el-menu-item>-->
           <el-menu-item style="margin-top: -18px">
             <h1>并夕夕优选后台管理系统</h1>
           </el-menu-item>
@@ -32,7 +32,7 @@
       <el-container>
         <el-aside width="210px" style="height: 680px">
           <el-menu  class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-            <!--            @click="cmenu"-->
+<!--                        @click="cmenu"-->
             <router-link to="/myMain" class="a" >
               <el-menu-item index="1" >
                 <i class="el-icon-location"></i>
@@ -54,14 +54,19 @@
                 <el-menu-item index="1-2">角色管理</el-menu-item>
                 </router-link>
 
-                <router-link to="/#" class="a">
+                <router-link to="/Mymain" class="a">
                 <el-menu-item index="1-3">权限管理</el-menu-item>
                 </router-link>
 
               </el-menu-item-group>
               <el-menu-item-group title="系统">
+                <router-link to="/menus" class="a">
                 <el-menu-item index="1-4">菜单管理</el-menu-item>
+                </router-link>
+
+                <router-link to="" class="a">
                 <el-menu-item index="1-5">职位管理</el-menu-item>
+                </router-link>
               </el-menu-item-group>
 
             </el-submenu>
@@ -160,8 +165,32 @@
               </template>
               <el-menu-item index="3-0">车辆信息维护</el-menu-item>
             </el-submenu>
-          </el-menu>
-        </el-aside>
+<!--      <el-container>-->
+<!--                <el-aside width="210px" style="height: 680px;">-->
+<!--                  <el-menu  class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">-->
+<!--                      <el-submenu  :index="pmenu.mid+''" v-for="pmenu in permission">-->
+<!--                        <template slot="title">-->
+<!--                          <span>{{pmenu.name}}</span>-->
+<!--                        </template>-->
+<!--                        <el-submenu :index="cmenu.mid+''" v-for="cmenu in pmenu.permissions">-->
+
+<!--                          <template   slot="title" v-if="cmenu.permissionss.length==0"  >-->
+<!--                            <div style="width: 100px;height: 50px" @click="addTab1(cmenu.name,cmenu.url)">-->
+<!--                              {{cmenu.name}}-->
+<!--                            </div>-->
+<!--                          </template>-->
+
+<!--                          <template slot="title" v-if="cmenu.permissionss.length!=0">-->
+<!--                            {{cmenu.name}}-->
+<!--                          </template>-->
+
+<!--                          <el-menu-item @click="addTab(cmenus.name,cmenus.url)" index="2-4-1" v-for="cmenus in cmenu.permissionss">-->
+<!--                            {{cmenus.name}}-->
+<!--                          </el-menu-item>-->
+<!--                        </el-submenu>-->
+<!--                      </el-submenu>-->
+                    </el-menu>
+                </el-aside>
 
         <el-main>
           <router-view></router-view>
@@ -181,12 +210,31 @@
         isCollapse: false,
         handleSelect:false,
         username:'',
+        // ios:"el-icon-sort",
+        permission:[],
+        editableTabsValue: '2',
+        editableTabs: [],
+        tabIndex: 2
       }
     },
     created() {
+      // this.qxquery()
       this.getdata();
     },
     methods: {
+      // sx(){
+      //   this.qxquery()
+      // },
+      // qxquery(){
+      //   var yg = sessionStorage.getItem("uid");
+      //   //// var yloginname = sessionStorage.getItem("yloginname");
+      //   //// this.$store.commit('setsessios',yloginname)
+      //   this.$axios.post("qx/qxAll.action?uid="+yg).then(val=>{
+      //     this.permission = val.data
+      //
+      //   })
+      // },
+
       handleOpen(key, keyPath) {
         // console.log(key, keyPath);
       },
@@ -201,6 +249,7 @@
         _this.username= sessionStorage.getItem("username");
       }
     },
+
   }
 </script>
 

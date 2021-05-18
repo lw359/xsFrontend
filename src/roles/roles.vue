@@ -29,8 +29,8 @@
           <el-table :data="cationData" border style="width: 100%" >
             <el-table-column prop="id" label="角色编号" width="150">
               <template slot-scope="scope">
-                <router-link :to="{path:'/rolesDetails',query:{id:scope.row.id}}" class="a" >
-                  {{ scope.row.id }}
+                <router-link :to="{path:'/rolesDetails',query:{id:scope.row.rid}}" class="a" >
+                  {{ scope.row.rid }}
                 </router-link>
               </template>
             </el-table-column>
@@ -48,10 +48,10 @@
               <template slot-scope="scope">
                 <!-- 修改 -->
                 <el-button round type="primary" icon="el-icon-edit" size="mini"
-                           @click="showEditDialog(scope.row.id)">修改</el-button>
+                           @click="showEditDialog(scope.row.rid)">修改</el-button>
                 <!-- 删除 -->
                 <el-button round type="danger" icon="el-icon-delete" size="mini"
-                           @click="deleteEmpInfo(scope.row.id)">删除</el-button>
+                           @click="deleteEmpInfo(scope.row.rid)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -320,7 +320,7 @@
       deleteEmpInfo(id) {
         var _this=this;
         if (confirm("此操作将永久删除该条数据, 是否继续?")){
-          this.$axios.post("/deleteRoles.action?id="+id).then(
+          this.$axios.post("/deleteRoles.action?rid="+id).then(
             function (response){
               _this.$message.success("删除成功！")
               _this.getdata();
@@ -342,7 +342,7 @@
         //     _this.sh=response.data;
         // });
         var _this =this;
-        this.$axios.post("/queryByidRoles.action?id="+id).then(function (response) {
+        this.$axios.post("/queryByidRoles.action?rid="+id).then(function (response) {
           console.log(response.data)
           _this.editForm=response.data;
         }).catch()
@@ -359,7 +359,7 @@
         // Object.keys(this.editForm).forEach(function (key){
         //   params.append(key,_this.editForm[key]);
         // })
-        params.append("id",this.editForm.id);
+        params.append("rid",this.editForm.rid);
         params.append("name",this.editForm.name);
         params.append("code",this.editForm.code);
         params.append("descn",this.editForm.descn);

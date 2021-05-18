@@ -27,9 +27,14 @@
         <el-card style="margin-top: 50px">
           <!--    展示表格数据-->
           <el-table :data="cationData" border style="width: 100%" >
-            <el-table-column prop="spId" label="商品ID" width="180">
+              <el-table-column prop="spId" label="商品ID" width="150">
+                <template slot-scope="scope">
+                  <router-link :to="{path:'/tenanceGoodsDetails',query:{id:scope.row.spId}}" class="a" >
+                    {{ scope.row.spId }}
+                  </router-link>
+                </template>
+              </el-table-column>
 
-            </el-table-column>
             <el-table-column prop="spTypeId" label="商品分类ID" width="180" ></el-table-column>
             <el-table-column prop="goodsName" label="商品名称"></el-table-column>
             <el-table-column prop="price" label="单价"></el-table-column>

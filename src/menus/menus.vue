@@ -4,7 +4,7 @@
       <el-header>
         <el-menu  class="el-menu-demo" mode="horizontal"style="width: 100%;margin-left: -20px">
           <el-menu-item style="margin-top: -18px">
-            <h1>用户管理 > 普通用户资料维护</h1>
+            <h1>菜单管理 </h1>
           </el-menu-item>
         </el-menu>
         <div class="line"></div>
@@ -12,14 +12,14 @@
       <el-main>
         <div style="margin-top: 0px;left: -500px">
           <el-input
-            placeholder="输入用户名称"
+            placeholder="输入菜单名称"
             v-model="input"
             clearable style="width: 250px"
-            id="goodsName"
+            id="name"
           >
           </el-input>
           <el-button type="success" plain @click="getQuery()">查询</el-button>
-          <el-button style="margin-left: 800px" type="info" @click="addDialog"  >添加</el-button>
+          <el-button style="margin-left: 800px" type="info" @click="addDialog">添加</el-button>
         </div>
         <div>
 
@@ -27,33 +27,31 @@
         <el-card style="margin-top: 50px">
           <!--    展示表格数据-->
           <el-table :data="cationData" border style="width: 100%" >
-            <el-table-column prop="id" label="用户ID" width="150">
+            <el-table-column prop="mid" label="菜单编号" width="150">
               <template slot-scope="scope">
-                <router-link :to="{path:'/mainTenanceDetails',query:{id:scope.row.id}}" class="a" >
-                  {{ scope.row.id }}
+                <router-link :to="{path:'/menusDetails',query:{id:scope.row.mid}}" class="a" >
+                  {{ scope.row.mid }}
                 </router-link>
               </template>
             </el-table-column>
-<!--          <el-table :data="cationData" border style="width: 100%" >-->
-<!--            <el-table-column prop="id" label="用户ID" width="120"></el-table-column>-->
-            <el-table-column prop="username" label="用户名" width="150" ></el-table-column>
-
-            <el-table-column prop="status" label="状态"  width="110"></el-table-column>
-            <el-table-column prop="iphone" label="电话" width="150" ></el-table-column>
-            <el-table-column prop="email" label="邮箱"></el-table-column>
-            <el-table-column label="头像" >
-              <template slot-scope="scope">
-                <img style="width: 120px;height: 60px" :src="'http://localhost:8090/img/'+scope.row.img">
-              </template>
-            </el-table-column>
+            <el-table-column prop="name" label="菜单名称"  ></el-table-column>
+            <el-table-column prop="url" label="菜单url"  ></el-table-column>
+            <el-table-column prop="descn" label="菜单描述"  ></el-table-column>
+            <!--            <el-table-column prop="auditState" label="审核状态">-->
+            <!--              <template slot-scope="scope">-->
+            <!--                <span v-if="scope.row.auditState=='G-001'">未审核</span>-->
+            <!--                <span v-if="scope.row.auditState=='G-002'">审核通过</span>-->
+            <!--                <span v-if="scope.row.auditState=='G-003'">审核不通过</span>-->
+            <!--              </template>-->
+            <!--            </el-table-column>-->
             <el-table-column prop="Stat" label="操作">
               <template slot-scope="scope">
                 <!-- 修改 -->
                 <el-button round type="primary" icon="el-icon-edit" size="mini"
-                           @click="showEditDialog(scope.row.id)">修改</el-button>
+                           @click="showEditDialog(scope.row.mid)">修改</el-button>
                 <!-- 删除 -->
                 <el-button round type="danger" icon="el-icon-delete" size="mini"
-                           @click="deleteEmpInfo(scope.row.id)">删除</el-button>
+                           @click="deleteEmpInfo(scope.row.mid)">删除</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -68,28 +66,30 @@
           </el-pagination>
         </el-card>
         <!--添加分类对话框-->
-        <el-dialog  title="添加用户信息" :visible.sync="addDialogVisible" @close="addDialogClosed" width="50%">
+        <el-dialog  title="添加菜单信息" :visible.sync="addDialogVisible" @close="addDialogClosed" width="50%">
           <el-form  :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px">
-            <!-- 用户名称 -->
-            <el-form-item label="用户名" prop="username" >
-              <el-input v-model="addForm.username"></el-input>
+            <!-- 菜单编号 -->
+<!--            <el-form-item label="菜单编号" prop="supId" >-->
+<!--              <el-input v-model="addForm.supId"></el-input>-->
+<!--            </el-form-item>-->
+            <!-- 菜单名称 -->
+            <el-form-item label="菜单名称" prop="name">
+              <el-input v-model="addForm.name"></el-input>
             </el-form-item>
-            <!-- 密码 -->
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="addForm.password"></el-input>
+            <!-- 菜单代码 -->
+            <el-form-item label="菜单url" prop="url">
+              <el-input v-model="addForm.url"></el-input>
             </el-form-item>
-            <!-- 电话 -->
-            <el-form-item label="电话" prop="iPhone">
-              <el-input v-model="addForm.iPhone"></el-input>
+            <!-- 菜单描述 -->
+            <el-form-item label="菜单描述" prop="descn">
+              <el-input v-model="addForm.descn"></el-input>
             </el-form-item>
-            <!-- 邮箱 -->
-            <el-form-item label="邮箱" prop="email">
-              <el-input v-model="addForm.email"></el-input>
-            </el-form-item>
-            <!-- 照片 -->
-            <el-form-item label="头像" prop="photo">
-              <input type="file" @change="getFileImage($event)">
-            </el-form-item>
+
+
+            <!--            &lt;!&ndash; 审核状态 &ndash;&gt;-->
+            <!--            <el-form-item label="审核状态" prop="auditState">-->
+            <!--              <el-input v-model="addForm.auditState"></el-input>-->
+            <!--            </el-form-item>-->
           </el-form>
           <!-- 内容底部区域 -->
           <span slot="footer" class="dialog-footer">
@@ -100,43 +100,33 @@
 
 
         <!-- 修改用户对话框 -->
-        <el-dialog title="修改商品信息" :visible.sync="editDialogVisible" width="50%" @colse="editDialogClosed">
-          <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="80px">
-            <!-- ID -->
-            <el-form-item label="ID" prop="id" >
-              <el-input v-model="editForm.id" :disabled="true"></el-input>
+        <el-dialog title="修改菜单信息" :visible.sync="editDialogVisible" width="50%" @colse="editDialogClosed">
+          <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
+
+            <!-- 菜单名称 -->
+            <el-form-item label="菜单名称" prop="name">
+              <el-input v-model="editForm.name"></el-input>
             </el-form-item>
-            <!-- 用户名 -->
-            <el-form-item label="用户名" prop="username" >
-              <el-input v-model="editForm.username"></el-input>
+            <!-- 菜单代码 -->
+            <el-form-item label="菜单代码" prop="url">
+              <el-input v-model="editForm.url"></el-input>
             </el-form-item>
-            <!-- 密码 -->
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="editForm.password"  show-password></el-input>
+            <!-- 菜单描述 -->
+            <el-form-item label="菜单描述" prop="descn">
+              <el-input v-model="editForm.descn"></el-input>
             </el-form-item>
-            <!-- 电话 -->
-            <el-form-item label="电话" prop="iphone">
-              <el-input v-model="editForm.iphone"></el-input>
-            </el-form-item>
-            <!-- 邮箱 -->
-            <el-form-item label="邮箱" prop="email">
-              <el-input v-model="editForm.email"></el-input>
-            </el-form-item>
-            <!-- 头像 -->
-            <el-form-item label="头像" prop="photo">
-              <input type="file" @change="getFileImage($event)">
-            </el-form-item>
+
             <!-- 状态 -->
-            <el-form-item label="状态" prop="status">
-              <el-select v-model="editForm.status" size="medium" clearable  placeholder="请选择状态">
-                <el-option
-                  v-for="item in Stated"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-                </el-option>
-              </el-select>
-            </el-form-item>
+<!--            <el-form-item label="状态" prop="tarState">-->
+<!--              <el-select v-model="editForm.tarState" size="medium" clearable  placeholder="请选择状态">-->
+<!--                <el-option-->
+<!--                  v-for="item in Stated"-->
+<!--                  :key="item.id"-->
+<!--                  :label="item.name"-->
+<!--                  :value="item.id">-->
+<!--                </el-option>-->
+<!--              </el-select>-->
+<!--            </el-form-item>-->
           </el-form>
           <span slot="footer" class="dialog-footer">
              <el-button type="primary" @click="editEmpInfo">保 存</el-button>
@@ -158,51 +148,61 @@
   import axios from "axios";
 
   export default {
-    name: "mainTenance",
+    name: "",
     data() {
       return {
         pageno: 1,
         pagesize:5,
         total:0,
         file:null,
+        //存放状态
+        Stated:[
+          {id:"A-001",name:"可用"},
+          {id:"A-002",name:"不可用"}
+        ],
+        //存放状态
+        auditStated:[
+          {id:"G-001",name:"未审核"},
+        ],
         //存放展示信息
         cationData: [],
         input: '',
-        //存放状态
-        Stated:[
-          {id:"U-001",name:"可用"},
-          {id:"U-002",name:"注销"},
-        ],
+        //存放分类级别
+        jibie:[],
+        //存放菜单
+        gys:[],
+        //存放商户
+        sh:[],
 // ============================添加分类信息==================
         addDialogVisible: false,// 添加数据对话框：false 隐藏 true 显示
         // 添加分类表单项 请求参数
         addForm: {
-          iPhone: ""
+
+
         },
         // 添加时/(修改时也可复用)查询所有的部门
         DepartmentList: [],
         // 添加数据对话框验证规则
         addFormRules: {
-          username:[
-            {required: true, message: "用户名不能为空", trigger: "blur"}
+
+          name: [
+            {required: true, message: "请输入菜单名称", trigger: "blur"}
           ],
-          password: [
-            {required: true, message: "密码不能为空", trigger: "blur"},
+          code: [
+            {required: true, message: "请输入菜单代码", trigger: "blur"},
           ],
-          iPhone: [
-            {required: true, message: "电话号码不能为空", trigger: "blur"},
+          descn: [
+            {required: true, message: "请输入菜单描述", trigger: "blur"},
           ],
-          email: [
-            {required: true, message: "邮箱不能为空", trigger: "blur"},
-          ]
+
         },
         // =====================修改分类信息==============================
         // 控制修改对话框显示true/隐藏false
         editDialogVisible: false,
         // 修改分类信息
         editForm: {
-          spStat: "",
-          spId: "",
+          tarState: "",
+          gysId: "",
           shid: ""
         },
         // 修改分类表单验证规则
@@ -237,8 +237,8 @@
         //分页
         params.append("pageno",this.pageno);
         params.append("pagesize",this.pagesize);
-        params.append("name",document.getElementById("goodsName").value)
-        this.$axios.post("/showTenanUsersMh.action",params).then(function (response) {
+        params.append("name",document.getElementById("name").value)
+        this.$axios.post("/showMenusMh.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
         }).catch();
@@ -249,7 +249,7 @@
         var params = new URLSearchParams();
         params.append("pageno",this.pageno); //分页
         params.append("pagesize",this.pagesize);
-        this.$axios.post("/showTenanUsers.action",params).then(function (response) {
+        this.$axios.post("/MenusAll.action",params).then(function (response) {
           _this.cationData=response.data.records;
           _this.total = response.data.total;
         }).catch();
@@ -289,19 +289,26 @@
       },
       //展示下拉框数据
       addDialog(){
+        var _this=this;
         this.addDialogVisible=true;
+        // this.$axios.post("/showAllSp.action").then(function (response){
+        //     _this.jibie=response.data;
+        // });
+        // this.$axios.post("/showAllGys.action").then(function (response){
+        //     _this.gys=response.data;
+        // });
+        // this.$axios.post("/showAllSh.action").then(function (response){
+        //     _this.sh=response.data;
+        // });
       },
-      // 添加商品信息
+      // 添加菜单信息
       addEmpSp() {
         var _this=this;
         var params = new URLSearchParams();
-        params.append("username",this.addForm.username);
-        params.append("password",this.addForm.password);
-        params.append("iPhone",this.addForm.iPhone);
-        params.append("email",this.addForm.email);
-        params.append("status","U-001");
-        params.append("img",_this.file.name);
-        this.$axios.post("/addTenanUsers.action",params).then(res => {
+        Object.keys(this.addForm).forEach(function (key){
+          params.append(key,_this.addForm[key]);
+        })
+        this.$axios.post("/addMenus.action",params).then(res => {
           _this.$message.success("添加成功!");
           // 隐藏对话框
           _this.addDialogVisible = false;
@@ -313,7 +320,7 @@
       deleteEmpInfo(id) {
         var _this=this;
         if (confirm("此操作将永久删除该条数据, 是否继续?")){
-          this.$axios.post("/deleteTenanceUser.action?id="+id).then(
+          this.$axios.post("/deleteMenus.action?mid="+id).then(
             function (response){
               _this.$message.success("删除成功！")
               _this.getdata();
@@ -325,8 +332,17 @@
 
       // =======根据id查询要修改的分类信息：点击修改，展示修改框
       showEditDialog(id) {
+        // this.$axios.post("/showAllSp.action").then(function (response){
+        //     _this.jibie=response.data;
+        // });
+        // this.$axios.post("/showAllGys.action").then(function (response){
+        //     _this.gys=response.data;
+        // });
+        // this.$axios.post("/showAllSh.action").then(function (response){
+        //     _this.sh=response.data;
+        // });
         var _this =this;
-        this.$axios.post("/queryByidUser.action?id="+id).then(function (response) {
+        this.$axios.post("/queryByidMenus.action?mid="+id).then(function (response) {
           console.log(response.data)
           _this.editForm=response.data;
         }).catch()
@@ -340,14 +356,14 @@
       editEmpInfo() {
         var _this=this;
         var params = new URLSearchParams();
-        params.append("ID",this.editForm.id);
-        params.append("username",this.editForm.username);
-        params.append("password",this.editForm.password);
-        params.append("iPhone",this.editForm.iphone);
-        params.append("email",this.editForm.email);
-        params.append("status",this.editForm.status);
-        params.append("img",_this.file.name);
-        this.$axios.post("/updateUser.action",params).then(
+        // Object.keys(this.editForm).forEach(function (key){
+        //   params.append(key,_this.editForm[key]);
+        // })
+        params.append("id",this.editForm.id);
+        params.append("name",this.editForm.name);
+        params.append("url",this.editForm.url);
+        params.append("descn",this.editForm.descn);
+        this.$axios.post("/updateMenus.action",params).then(
           function (response){
             _this.$message.success("修改成功！");
             //隐藏修改框

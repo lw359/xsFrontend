@@ -29,7 +29,7 @@
           <el-table :data="cationData" border style="width: 100%" >
             <el-table-column prop="uid" label="员工工号" width="150">
               <template slot-scope="scope">
-                <router-link :to="{path:'/rolesDetails',query:{id:scope.row.uid}}" class="a" >
+                <router-link :to="{path:'/staffDetails',query:{id:scope.row.uid}}" class="a" >
                   {{ scope.row.uid }}
                 </router-link>
               </template>
@@ -77,7 +77,7 @@
             <!--            <el-form-item label="员工编号" prop="supId" >-->
             <!--              <el-input v-model="addForm.supId"></el-input>-->
             <!--            </el-form-item>-->
-            '<!-- 员工工号 -->
+            <!-- 员工工号 -->
             <el-form-item label="员工工号" prop="empno">
               <el-input v-model="addForm.empno"></el-input>
             </el-form-item>

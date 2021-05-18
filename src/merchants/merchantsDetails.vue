@@ -11,7 +11,7 @@
     <el-main>
       <el-form ref="form" :model="form" label-width="100px">
         <!-- ID -->
-        <el-form-item label="商户id" prop="shid" >
+        <el-form-item label="商户编号" prop="shid" >
           <el-input v-model="form.shid" :disabled="true"></el-input>
         </el-form-item>
         <!-- 商户名字 -->
